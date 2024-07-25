@@ -8,6 +8,9 @@ export struct HomePage {
   @State dataList: HomeModelIssueListItemList[] = []
 
   aboutToAppear() {
+
+
+
     apiService.getHomeList("").then(homeModel => {
       if (homeModel) {
         console.log('Home List:', homeModel);
