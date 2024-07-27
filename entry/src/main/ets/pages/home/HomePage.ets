@@ -1,46 +1,24 @@
 import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeModel'
-import apiService from '../../http/ApiService'
-import { LogUtils } from '../../util/LogUtils';
-import { AxiosResponse } from '@ohos/axios';
-import http from '@ohos.net.http';
+import { rcp } from '@kit.RemoteCommunicationKit';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 @Component
 export struct HomePage {
   @State dataList: HomeModelIssueListItemList[] = []
 
   aboutToAppear() {
-    apiService.getHomeList("").then(homeModel => {
-      if (homeModel) {
-        console.log('Home List:', homeModel);
-        let items = homeModel.issueList[0].itemList
-        let list = items.filter((item) => item.type == "video")
-
-        this.dataList = list.slice(4)
-        console.log('======================')
-        console.log("data size:" + this.dataList.length)
-      } else {
-        console.log('Failed to fetch home list.');
-      }
-    }).catch((error: Error) => {
-      console.error('Failed to fetch home list:', error);
+    const session = rcp.createSession();
+    session.get("https://baobab.kaiyanapp.com/api/v2/feed").then((response) => {
+      console.info(`Response succeeded: '${JSON.stringify(response)}`);
+      let data: HomeModel = JSON.parse(response.toString()!!);
+      let items = data.issueList[0].itemList
+      let list = items.filter((item) => item.type == "video")
+      this.dataList = list.slice(4)
+      session.close();
+    }).catch((err: BusinessError) => {
+      console.error(`Response err: Code is ${err.code}, message is ${JSON.stringify(err)}`);
+      session.close();
     });
-    console.log('*****************************************************************')
-    let httpRequest = http.createHttp();
-    httpRequest.request(
-      "https://baobab.kaiyanapp.com/api/v2/feed",
-      {
-        method: http.RequestMethod.GET, // 可选，默认为http.RequestMethod.GET
-      }, (err, data) => {
-      if (!err) {
-        console.info('Result1:' + JSON.stringify(data.result));
-        console.info('code1:' + JSON.stringify(data.responseCode));
-      } else {
-        console.info('error1:' + JSON.stringify(err));
-        httpRequest.off('headersReceive');
-        httpRequest.destroy();
-      }
-    }
-    );
   }
 
   build() {
