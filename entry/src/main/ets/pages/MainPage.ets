@@ -1,5 +1,6 @@
 import { TabItem } from '../model/TabItem'
 import { HomePage } from './home/HomePage'
+import { FindPage } from './find/FindPage'
 
 @Entry
 @Component
@@ -18,7 +19,9 @@ struct MainPage {
           imageOriginal: $r('app.media.icon_unsel_home')
         }, 0)).width("100%").height("100%")
 
-        TabContent().tabBar(this.TabBottom({
+        TabContent(){
+          FindPage()
+        }.tabBar(this.TabBottom({
           index: 1,
           title: "发现",
           imageActivated: $r('app.media.icon_sel_find'),

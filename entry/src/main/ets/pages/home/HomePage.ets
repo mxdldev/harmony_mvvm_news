@@ -26,12 +26,28 @@ export struct HomePage {
       List({ space: 10, initialIndex: 0 }) {
         ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {
           ListItem() {
-            Row() {
-              Image(item.data?.cover?.detail)
-                .width('100%')
-                .height('210vp')
-                .border({ radius: '10vp' })
-              Text(item.data?.category).fontSize('12fp').fontColor('#ffffff').width('45vp').height('20vp')
+            Column() {
+              Stack() {
+                Image(item.data?.cover?.detail)
+                  .width('100%')
+                  .height('210vp')
+                  .border({ radius: '10vp' })
+                Text(item.data?.category)
+                  .fontSize('12fp')
+                  .fontColor('#fff')
+                  .width('45vp')
+                  .height('20vp')
+                  .position({ x: 0, y: 0 })
+                  .margin(10)
+              }.width('100%').height('210vp')
+
+              Row() {
+                Image(item.data?.author.icon).width('50vp').height('50vp').border({radius:'25vp'})
+                Column() {
+                  Text(item.data?.author.name).fontColor('#333333').fontSize('20fp')
+                  Text(item.data?.author.name).fontColor('#999999').fontSize('13fp').margin({top:'5vp'})
+                }.alignItems(HorizontalAlign.Start).margin({left:'5vp'})
+              }.width('100%').height('60vp').padding({left:'5vp',right:'5vp'})
             }.width('100%')
           }
         })
