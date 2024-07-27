@@ -2,9 +2,18 @@
 export struct FindPage {
   build() {
     Column() {
-      Row() {
-        Text('发现').fontSize('22fp').fontColor('#ffffff').textAlign(TextAlign.Center)
-      }.width('100%').height('40vp').backgroundColor('#d81e06')
+
+      Row() { // 使用 Row 布局使文本水平居中
+        Text('发现')
+          .fontSize('22fp')
+          .fontColor('#ffffff')
+          .width('100%')
+          .height('40vp')
+          .align(Alignment.Center) // 文本垂直居中
+      }
+      .width('100%')
+      .height('40vp')
+      .backgroundColor('#d81e06')
 
       Tabs({ barPosition: BarPosition.Start }) {
         TabContent().tabBar(this.TabView('关注'))
