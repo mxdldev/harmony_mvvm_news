@@ -53,7 +53,6 @@ export struct HomePage {
         })
       }
     }
-
   }
 }
 
