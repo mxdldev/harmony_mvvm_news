@@ -1,4 +1,6 @@
+import { Category } from './CategoryPage'
 import { ForcePage } from './ForcePage'
+import { TopicPage } from './TopicPage'
 
 @Component
 export struct FindPage {
@@ -12,15 +14,15 @@ export struct FindPage {
         .textAlign(TextAlign.Center)
         .backgroundColor('#d81e06')
 
-      Tabs({ barPosition: BarPosition.Start }) {
+      Tabs({index:0, barPosition: BarPosition.Start }) {
         TabContent() {
           ForcePage()
         }.tabBar(this.TabView('关注'))
         TabContent() {
-          ForcePage()
+          Category()
         }.tabBar(this.TabView('分类'))
         TabContent() {
-          ForcePage()
+          TopicPage()
         }.tabBar(this.TabView('主题'))
       }.width('100%').height('100%')
     }.width('100%').height('100%')
@@ -28,6 +30,6 @@ export struct FindPage {
 
   @Builder
   TabView(title: string) {
-    Text(title).width('100%').height('50vp').fontColor('#ffffff').backgroundColor('#d81e06')
+    Text(title).width('100%').height('50vp').fontColor('#ffffff').textAlign(TextAlign.Center).backgroundColor('#d81e06')
   }
 }
