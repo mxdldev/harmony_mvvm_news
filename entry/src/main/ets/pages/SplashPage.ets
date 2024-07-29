@@ -9,7 +9,7 @@ struct SplashPage {
   }
   build() {
     Column() {
-      Image($r("app.media.landing_image")).width("100%").height("100%")
+      Image($r("app.media.landing_image")).width("100%").height("100%").objectFit(ImageFit.Fill)
     }.width("100%").height("100%")
   }
 }
