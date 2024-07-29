@@ -10,7 +10,6 @@ struct MainPage {
 
   build() {
     Column() {
-      Text('你好').fontSize('30fp').fontColor('#ff0000')
       Tabs({ index: this.selectIndex, barPosition: BarPosition.End }) {
         TabContent() {
           HomePage()
