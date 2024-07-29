@@ -1,5 +1,7 @@
 import { TabItem } from '../model/TabItem'
 import { HomePage } from './home/HomePage'
+import { FindPage } from './find/FindPage'
+import { MinePage } from './mine/MinePage'
 
 @Entry
 @Component
@@ -19,19 +21,24 @@ struct MainPage {
           imageOriginal: $r('app.media.icon_unsel_home')
         }, 0)).width("100%").height("100%")
 
-        TabContent().tabBar(this.TabBottom({
+        TabContent() {
+          FindPage()
+        }.tabBar(this.TabBottom({
           index: 1,
           title: "发现",
           imageActivated: $r('app.media.icon_sel_find'),
           imageOriginal: $r('app.media.icon_unsel_find')
         }, 1)).width("100%").height("100%")
+
         TabContent().tabBar(this.TabBottom({
           index: 2,
           title: "热门",
           imageActivated: $r('app.media.icon_sel_hot'),
           imageOriginal: $r('app.media.icon_unsel_hot')
         }, 2)).width("100%").height("100%")
-        TabContent().tabBar(this.TabBottom({
+        TabContent() {
+          MinePage()
+        }.tabBar(this.TabBottom({
           index: 3,
           title: "我的",
           imageActivated: $r('app.media.icon_sel_mine'),
