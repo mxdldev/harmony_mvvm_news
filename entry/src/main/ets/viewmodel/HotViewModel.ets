@@ -1,4 +1,4 @@
-interface HotTab {
+export interface HotTab {
   index: number;
   title: string;
   rankType: string;

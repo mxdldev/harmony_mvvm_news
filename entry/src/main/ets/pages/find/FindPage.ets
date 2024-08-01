@@ -10,7 +10,7 @@ export struct FindPage {
         .fontSize('22fp')
         .fontColor('#ffffff')
         .width('100%')
-        .height('60vp')
+        .height('50vp')
         .textAlign(TextAlign.Center)
         .backgroundColor('#d81e06')
 
