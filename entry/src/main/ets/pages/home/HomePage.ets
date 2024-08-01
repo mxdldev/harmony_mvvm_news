@@ -1,6 +1,7 @@
 import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeModel'
 import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
+import { router } from '@kit.ArkUI';
 
 @Component
 export struct HomePage {
@@ -50,19 +51,26 @@ export struct HomePage {
                     Text(item.data?.author.name).fontColor('#999999').fontSize('13fp').margin({ top: '5vp' })
                   }.alignItems(HorizontalAlign.Start).margin({ left: '5vp' })
                 }.width('100%').height('60vp').padding({ left: '5vp', right: '5vp' })
-              }.width('100%')
+              }.width('100%').onClick(() => {
+                router.pushUrl({
+                  url: 'pages/home/HomeDetailPage',
+                  params: { 'id': item.data?.id, 'playUrl': item.data?.playUrl }
+                }, router.RouterMode.Standard, (error) => {
+
+                })
+              })
             }
           })
-        }.onReachEnd(()=>{
-             console.info("MYTAG","onReachEnd start...")
+        }.onReachEnd(() => {
+          console.info("MYTAG", "onReachEnd start...")
         })
       }.onStateChange((refreshStatus: RefreshStatus) => {
-          console.info('refresh state is:'+refreshStatus)
+        console.info('refresh state is:' + refreshStatus)
       })
       .onRefreshing(() => {
-            setTimeout(()=>{
-              this.isRefreshing = false
-            },1000 * 5)
+        setTimeout(() => {
+          this.isRefreshing = false
+        }, 1000 * 5)
       })
     }
   }
