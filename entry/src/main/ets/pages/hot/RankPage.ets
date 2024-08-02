@@ -1,7 +1,6 @@
 import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { HomeModel, HomeModelIssueListItemList } from '../../model/HomeModel';
-import { HomeModelIssueList } from '../../http/entity/HomeModel';
 import hotViewModel from '../../viewmodel/HotViewModel';
 
 @Component

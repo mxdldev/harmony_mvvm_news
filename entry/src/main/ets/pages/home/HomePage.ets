@@ -52,6 +52,7 @@ export struct HomePage {
                   }.alignItems(HorizontalAlign.Start).margin({ left: '5vp' })
                 }.width('100%').height('60vp').padding({ left: '5vp', right: '5vp' })
               }.width('100%').onClick(() => {
+                console.info("MYTAG","item click start...")
                 router.pushUrl({
                   url: 'pages/home/HomeDetailPage',
                   params: { 'id': item.data?.id, 'playUrl': item.data?.playUrl }
