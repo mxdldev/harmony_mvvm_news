@@ -2,6 +2,8 @@ import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeMod
 import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { router } from '@kit.ArkUI';
+import { CommonTitleBar } from '../../view/CommonTitleBar';
+import { CommonStateView } from '../../view/CommonStateView';
 
 @Component
 export struct HomePage {
@@ -25,54 +27,57 @@ export struct HomePage {
 
   build() {
     Column() {
-      Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
-        List({ space: 10, initialIndex: 0 }) {
-          ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {
-            ListItem() {
-              Column() {
-                Stack() {
-                  Image(item.data?.cover?.detail)
-                    .width('100%')
-                    .height('210vp')
-                    .border({ radius: '10vp' })
-                  Text(item.data?.category)
-                    .fontSize('12fp')
-                    .fontColor('#fff')
-                    .width('45vp')
-                    .height('20vp')
-                    .position({ x: 0, y: 0 })
-                    .margin(10)
-                }.width('100%').height('210vp')
+      CommonTitleBar({ isShowBackBtn: false, title: '首页' })
+      CommonStateView() {
+        Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
+          List({ space: 10, initialIndex: 0 }) {
+            ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {
+              ListItem() {
+                Column() {
+                  Stack() {
+                    Image(item.data?.cover?.detail)
+                      .width('100%')
+                      .height('210vp')
+                      .border({ radius: '10vp' })
+                    Text(item.data?.category)
+                      .fontSize('12fp')
+                      .fontColor('#fff')
+                      .width('45vp')
+                      .height('20vp')
+                      .position({ x: 0, y: 0 })
+                      .margin(10)
+                  }.width('100%').height('210vp')
 
-                Row() {
-                  Image(item.data?.author.icon).width('50vp').height('50vp').border({ radius: '25vp' })
-                  Column() {
-                    Text(item.data?.author.name).fontColor('#333333').fontSize('20fp')
-                    Text(item.data?.author.name).fontColor('#999999').fontSize('13fp').margin({ top: '5vp' })
-                  }.alignItems(HorizontalAlign.Start).margin({ left: '5vp' })
-                }.width('100%').height('60vp').padding({ left: '5vp', right: '5vp' })
-              }.width('100%').onClick(() => {
-                console.info("MYTAG","item click start...")
-                router.pushUrl({
-                  url: 'pages/home/HomeDetailPage',
-                  params: { 'id': item.data?.id, 'playUrl': item.data?.playUrl }
-                }, router.RouterMode.Standard, (error) => {
+                  Row() {
+                    Image(item.data?.author.icon).width('50vp').height('50vp').border({ radius: '25vp' })
+                    Column() {
+                      Text(item.data?.author.name).fontColor('#333333').fontSize('20fp')
+                      Text(item.data?.author.name).fontColor('#999999').fontSize('13fp').margin({ top: '5vp' })
+                    }.alignItems(HorizontalAlign.Start).margin({ left: '5vp' })
+                  }.width('100%').height('60vp').padding({ left: '5vp', right: '5vp' })
+                }.width('100%').onClick(() => {
+                  console.info("MYTAG", "item click start...")
+                  router.pushUrl({
+                    url: 'pages/home/HomeDetailPage',
+                    params: { 'id': item.data?.id, 'playUrl': item.data?.playUrl }
+                  }, router.RouterMode.Standard, (error) => {
 
+                  })
                 })
-              })
-            }
+              }
+            })
+          }.onReachEnd(() => {
+            console.info("MYTAG", "onReachEnd start...")
           })
-        }.onReachEnd(() => {
-          console.info("MYTAG", "onReachEnd start...")
+        }.onStateChange((refreshStatus: RefreshStatus) => {
+          console.info('refresh state is:' + refreshStatus)
         })
-      }.onStateChange((refreshStatus: RefreshStatus) => {
-        console.info('refresh state is:' + refreshStatus)
-      })
-      .onRefreshing(() => {
-        setTimeout(() => {
-          this.isRefreshing = false
-        }, 1000 * 5)
-      })
+        .onRefreshing(() => {
+          setTimeout(() => {
+            this.isRefreshing = false
+          }, 1000 * 5)
+        })
+      }
     }
   }
 }

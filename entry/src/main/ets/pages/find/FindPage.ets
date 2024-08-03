@@ -1,3 +1,4 @@
+import { CommonTitleBar } from '../../view/CommonTitleBar'
 import { Category } from './CategoryPage'
 import { ForcePage } from './ForcePage'
 import { TopicPage } from './TopicPage'
@@ -6,14 +7,7 @@ import { TopicPage } from './TopicPage'
 export struct FindPage {
   build() {
     Column() {
-      Text('发现')
-        .fontSize('22fp')
-        .fontColor('#ffffff')
-        .width('100%')
-        .height('50vp')
-        .textAlign(TextAlign.Center)
-        .backgroundColor('#d81e06')
-
+      CommonTitleBar({ isShowBackBtn: false, title: '发现' })
       Tabs({index:0, barPosition: BarPosition.Start }) {
         TabContent() {
           ForcePage()

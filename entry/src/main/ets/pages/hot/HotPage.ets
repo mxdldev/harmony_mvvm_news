@@ -1,17 +1,12 @@
 import { RankPage } from './RankPage'
 import hotViewModel, { HotTab } from '../../viewmodel/HotViewModel';
+import { CommonTitleBar } from '../../view/CommonTitleBar';
 
 @Component
 export struct HotPage {
   build() {
     Column() {
-      Text('热门')
-        .width('100%')
-        .height('50vp')
-        .fontSize('14fp')
-        .fontColor('#ffffff')
-        .backgroundColor('#ff0000')
-        .textAlign(TextAlign.Center)
+      CommonTitleBar({ isShowBackBtn: false, title: '热门' })
       Tabs() {
         ForEach(hotViewModel.hotTabTitle, (hotTab: HotTab, index) => {
           TabContent() {

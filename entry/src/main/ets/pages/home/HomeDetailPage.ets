@@ -3,6 +3,7 @@ import { BusinessError } from '@kit.BasicServicesKit';
 import { router } from '@kit.ArkUI';
 import { DetailPageParams } from '../../model/DetailPageParams';
 import { HomeModel, HomeModelIssueListItemList } from '../../model/HomeModel';
+import { CommonTitleBar } from '../../view/CommonTitleBar';
 
 @Entry
 @Component
@@ -35,6 +36,7 @@ export struct HomeDetailPage {
 
   build() {
     Column() {
+      CommonTitleBar({ isShowBackBtn: true, title: '视频详情' })
       Video({ src: this.playUrl, previewUri: this.previewUris, controller: this.controller })
         .width('100%')
         .height('250vp')
