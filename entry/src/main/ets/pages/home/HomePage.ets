@@ -2,83 +2,96 @@ import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeMod
 import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { router } from '@kit.ArkUI';
-import { CommonTitleBar } from '../../view/CommonTitleBar';
-import { CommonStateView } from '../../view/CommonStateView';
+import { CommonRootPage } from '../../view/CommonRootPage';
+import { LoadingProps } from '../../view/LoadingProps';
 
 @Component
 export struct HomePage {
+  @State loadingProps: LoadingProps = {
+    isShowInitLoading: false,
+    isShowTransparentLoading: false,
+    isShowNoData: false,
+    isShowNetErr: false,
+  }
   @State dataList: HomeModelIssueListItemList[] = []
   @State isRefreshing: boolean = false
 
   aboutToAppear() {
+    this.loadingProps.isShowInitLoading = true
     const session = rcp.createSession();
     session.get("https://baobab.kaiyanapp.com/api/v2/feed").then((response) => {
       console.info(`Response succeeded: '${JSON.stringify(response)}`);
       let data: HomeModel = JSON.parse(response.toString()!!);
       let items = data.issueList[0].itemList
       let list = items.filter((item) => item.type == "video")
-      this.dataList = list.slice(4)
+      //this.dataList = list.slice(4)
+      this.dataList = list
       session.close();
+      this.loadingProps.isShowInitLoading = false
     }).catch((err: BusinessError) => {
       console.error(`Response err: Code is ${err.code}, message is ${JSON.stringify(err)}`);
       session.close();
+      this.loadingProps.isShowNetErr = true
+      this.loadingProps.isShowInitLoading = false
     });
   }
 
   build() {
-    Column() {
-      CommonTitleBar({ isShowBackBtn: false, title: '首页' })
-      CommonStateView() {
-        Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
-          List({ space: 10, initialIndex: 0 }) {
-            ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {
-              ListItem() {
-                Column() {
-                  Stack() {
-                    Image(item.data?.cover?.detail)
-                      .width('100%')
-                      .height('210vp')
-                      .border({ radius: '10vp' })
-                    Text(item.data?.category)
-                      .fontSize('12fp')
-                      .fontColor('#fff')
-                      .width('45vp')
-                      .height('20vp')
-                      .position({ x: 0, y: 0 })
-                      .margin(10)
-                  }.width('100%').height('210vp')
+    CommonRootPage({
+      isShowBackBtn: false,
+      title: "首页",
+      loadingProps: this.loadingProps
+    }) {
+      Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
+        List({ space: 10, initialIndex: 0 }) {
+          ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {
+            ListItem() {
+              Column() {
+                Stack() {
+                  Image(item.data?.cover?.detail)
+                    .width('100%')
+                    .height('210vp')
+                    .border({ radius: '10vp' })
+                  Text(item.data?.category)
+                    .fontSize('12fp')
+                    .fontColor('#fff')
+                    .width('45vp')
+                    .height('20vp')
+                    .position({ x: 0, y: 0 })
+                    .margin(10)
+                }.width('100%').height('210vp')
 
-                  Row() {
-                    Image(item.data?.author.icon).width('50vp').height('50vp').border({ radius: '25vp' })
-                    Column() {
-                      Text(item.data?.author.name).fontColor('#333333').fontSize('20fp')
-                      Text(item.data?.author.name).fontColor('#999999').fontSize('13fp').margin({ top: '5vp' })
-                    }.alignItems(HorizontalAlign.Start).margin({ left: '5vp' })
-                  }.width('100%').height('60vp').padding({ left: '5vp', right: '5vp' })
-                }.width('100%').onClick(() => {
-                  console.info("MYTAG", "item click start...")
-                  router.pushUrl({
-                    url: 'pages/home/HomeDetailPage',
-                    params: { 'id': item.data?.id, 'playUrl': item.data?.playUrl }
-                  }, router.RouterMode.Standard, (error) => {
+                Row() {
+                  Image(item.data?.author.icon).width('50vp').height('50vp').border({ radius: '25vp' })
+                  Column() {
+                    Text(item.data?.author.name).fontColor('#333333').fontSize('20fp')
+                    Text(item.data?.author.name).fontColor('#999999').fontSize('13fp').margin({ top: '5vp' })
+                  }.alignItems(HorizontalAlign.Start).margin({ left: '5vp' })
+                }.width('100%').height('60vp').padding({ left: '5vp', right: '5vp' })
+              }.width('100%').onClick(() => {
+                console.info("MYTAG", "item click start...")
+                router.pushUrl({
+                  url: 'pages/home/HomeDetailPage',
+                  params: { 'id': item.data?.id, 'playUrl': item.data?.playUrl }
+                }, router.RouterMode.Standard, (error) => {
 
-                  })
                 })
-              }
-            })
-          }.onReachEnd(() => {
-            console.info("MYTAG", "onReachEnd start...")
+              })
+            }
           })
-        }.onStateChange((refreshStatus: RefreshStatus) => {
-          console.info('refresh state is:' + refreshStatus)
+        }.onReachEnd(() => {
+          console.info("MYTAG", "onReachEnd start...")
         })
-        .onRefreshing(() => {
-          setTimeout(() => {
-            this.isRefreshing = false
-          }, 1000 * 5)
-        })
-      }
+      }.onStateChange((refreshStatus: RefreshStatus) => {
+        console.info('refresh state is:' + refreshStatus)
+      })
+      .onRefreshing(() => {
+        setTimeout(() => {
+          this.isRefreshing = false
+        }, 1000 * 5)
+      })
     }
+
   }
 }
 

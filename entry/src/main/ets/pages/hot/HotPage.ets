@@ -1,16 +1,27 @@
 import { RankPage } from './RankPage'
 import hotViewModel, { HotTab } from '../../viewmodel/HotViewModel';
-import { CommonTitleBar } from '../../view/CommonTitleBar';
+import { LoadingProps } from '../../view/LoadingProps';
+import { CommonRootPage } from '../../view/CommonRootPage';
 
 @Component
 export struct HotPage {
+  @State loadingProps: LoadingProps = {
+    isShowInitLoading: false,
+    isShowTransparentLoading: false,
+    isShowNoData: false,
+    isShowNetErr: false,
+  }
+
   build() {
-    Column() {
-      CommonTitleBar({ isShowBackBtn: false, title: '热门' })
+    CommonRootPage({
+      isShowBackBtn: false,
+      title: "热门",
+      loadingProps: this.loadingProps
+    }) {
       Tabs() {
         ForEach(hotViewModel.hotTabTitle, (hotTab: HotTab, index) => {
           TabContent() {
-            RankPage({ rankType: hotTab.rankType })
+            RankPage({ rankType: hotTab.rankType, loadingProps: this.loadingProps })
           }.tabBar(this.tabItem(hotTab.title))
         })
       }

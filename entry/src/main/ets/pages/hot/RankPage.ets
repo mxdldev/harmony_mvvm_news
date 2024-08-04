@@ -2,22 +2,29 @@ import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { HomeModel, HomeModelIssueListItemList } from '../../model/HomeModel';
 import hotViewModel from '../../viewmodel/HotViewModel';
+import { LoadingProps } from '../../view/LoadingProps';
 
 @Component
 export struct RankPage {
+  @Link loadingProps: LoadingProps
   private rankType = hotViewModel.hotTabTitle[0].rankType
   @State dataList: HomeModelIssueListItemList[] = [];
 
   aboutToAppear(): void {
+    this.loadingProps.isShowInitLoading = true
     const session = rcp.createSession();
     session.get("https:baobab.kaiyanapp.com/api/v4/rankList/videos?strategy=" + this.rankType).then((response) => {
       console.info(`Response succeeded: '${JSON.stringify(response)}`);
       let data: HomeModel = JSON.parse(response.toString()!!);
       this.dataList = data.itemList
       session.close();
+      this.loadingProps.isShowInitLoading = false
+      this.loadingProps.isShowNetErr = false
     }).catch((err: BusinessError) => {
       console.error(`Response err: Code is ${err.code}, message is ${JSON.stringify(err)}`);
       session.close();
+      this.loadingProps.isShowInitLoading = false
+      this.loadingProps.isShowNetErr = true
     });
   }
 

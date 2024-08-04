@@ -1,19 +1,26 @@
 import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { CategoryModelChild } from '../../model/CategoryModel';
+import { LoadingProps } from '../../view/LoadingProps';
 
 @Component
 export struct Category{
+  @Link loadingProps: LoadingProps
   @State dataList: CategoryModelChild[] = []
   aboutToAppear(): void {
+    this.loadingProps.isShowInitLoading = true
     const session = rcp.createSession();
     session.get("https://baobab.kaiyanapp.com/api/v4/categories").then((response) => {
       console.info(`Response succeeded: '${JSON.stringify(response)}`);
       this.dataList = JSON.parse(response.toString()!!);
       session.close();
+      this.loadingProps.isShowInitLoading = false
+      this.loadingProps.isShowNetErr = false
     }).catch((err: BusinessError) => {
       console.error(`Response err: Code is ${err.code}, message is ${JSON.stringify(err)}`);
       session.close();
+      this.loadingProps.isShowInitLoading = false
+      this.loadingProps.isShowNetErr = true
     });
   }
   build() {

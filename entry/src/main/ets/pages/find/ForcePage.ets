@@ -1,21 +1,28 @@
 import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { FocusModel, FocusModelItemList, FocusModelItemListDataItemList } from '../../model/FocusModel';
+import { LoadingProps } from '../../view/LoadingProps';
 
 @Component
 export struct ForcePage {
+  @Link loadingProps: LoadingProps
   @State dataList: FocusModelItemList[] = []
 
   aboutToAppear(): void {
+    this.loadingProps.isShowInitLoading = true
     const session = rcp.createSession();
     session.get("https:baobab.kaiyanapp.com/api/v4/tabs/follow").then((response) => {
       console.info(`Response succeeded: '${JSON.stringify(response)}`);
       let data: FocusModel = JSON.parse(response.toString()!!);
       this.dataList = data.itemList
       session.close();
+      this.loadingProps.isShowInitLoading = false
+      this.loadingProps.isShowNetErr = false
     }).catch((err: BusinessError) => {
       console.error(`Response err: Code is ${err.code}, message is ${JSON.stringify(err)}`);
       session.close();
+      this.loadingProps.isShowInitLoading = false
+      this.loadingProps.isShowNetErr = true
     });
   }
 
