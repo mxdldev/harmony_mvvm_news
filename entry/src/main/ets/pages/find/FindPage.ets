@@ -13,12 +13,14 @@ export struct FindPage {
     isShowNoData: false,
     isShowNetErr: false,
   }
+  @State @Watch('onRefreshStart') isRefreshing: boolean = false
 
   build() {
     CommonRootPage({
       isShowBackBtn: false,
       title: "发现",
-      loadingProps:this.loadingProps
+      loadingProps:this.loadingProps,
+      isRefreshing: this.isRefreshing
     }) {
       Tabs({ index: 0, barPosition: BarPosition.Start }) {
         TabContent() {
@@ -44,5 +46,8 @@ export struct FindPage {
       .fontColor('#ffffff')
       .textAlign(TextAlign.Center)
       .backgroundColor('#d81e06')
+  }
+
+  onRefreshStart(changedPropertyName: string) {
   }
 }

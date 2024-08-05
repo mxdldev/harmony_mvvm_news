@@ -21,8 +21,10 @@ export struct HomeDetailPage {
   @State dataList: HomeModelIssueListItemList[] = []
   private controller: VideoController | undefined;
   private previewUris: Resource = $r('app.media.landing_image');
+  @State isRefreshing: boolean = false
 
   aboutToAppear(): void {
+
     const params: DetailPageParams = router.getParams() as DetailPageParams;
     this.dataId = params.id;
     this.playUrl = params.playUrl
@@ -47,9 +49,10 @@ export struct HomeDetailPage {
   build() {
     Column() {
       CommonRootPage({
-        isShowBackBtn: false,
-        title: "首页",
-        loadingProps: this.loadingProps
+        isShowBackBtn: true,
+        title: "视频详情",
+        loadingProps: this.loadingProps,
+        isRefreshing: this.isRefreshing
       }) {
         Column() {
           Video({ src: this.playUrl, previewUri: this.previewUris, controller: this.controller })

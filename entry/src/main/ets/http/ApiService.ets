@@ -1,35 +1,28 @@
-import axios, { AxiosResponse } from '@ohos/axios';
-import { HomeModel } from './entity/HomeModel'
+import { HomeModel } from './entity/HomeModel';
+import { HttpRequest, HttpRequestCallback } from './HttpRequest';
 
 class ApiService {
-  baseUrl: string;
+  private static instance: ApiService | null = null;
+  private httpRequest: HttpRequest;
 
-  constructor() {
-    this.baseUrl = 'https://baobab.kaiyanapp.com/';
+  private constructor() {
+    this.httpRequest = HttpRequest.getInstance()
   }
 
-  async getHomeList(date: string): Promise<HomeModel | null> {
-    try {
-      const response: AxiosResponse<HomeModel> =
-        await axios.get<HomeModel, AxiosResponse<HomeModel>, null>(this.baseUrl + "api/v2/feed", {
-          params: {
-            date // 使用正确的参数名称
-          }
-        });
-      console.log(JSON.stringify(response));
-      if (response.status === 200) {
-        return response.data;
-      } else {
-        console.log('请求失败', response);
-        throw new Error('请求失败');
-      }
-    } catch (error) {
-      console.error('请求异常', JSON.stringify(error));
-      return null; // 处理错误时返回 null
+  public static getInstance(): ApiService {
+    if (!ApiService.instance) {
+      ApiService.instance = new ApiService();
     }
+    return ApiService.instance;
+  }
+
+  /**
+   * 获取首页列表
+   * @param callback
+   */
+  public getHomeList(callback: HttpRequestCallback<HomeModel>): void {
+    this.httpRequest.get<HomeModel>("api/v2/feed", callback);
   }
 }
 
-const apiService = new ApiService();
-
-export default apiService;
+export { ApiService };

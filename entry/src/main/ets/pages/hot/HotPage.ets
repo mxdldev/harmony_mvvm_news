@@ -11,12 +11,14 @@ export struct HotPage {
     isShowNoData: false,
     isShowNetErr: false,
   }
+  @State @Watch('onRefreshStart') isRefreshing: boolean = false
 
   build() {
     CommonRootPage({
       isShowBackBtn: false,
       title: "热门",
-      loadingProps: this.loadingProps
+      loadingProps: this.loadingProps,
+      isRefreshing: this.isRefreshing
     }) {
       Tabs() {
         ForEach(hotViewModel.hotTabTitle, (hotTab: HotTab, index) => {
@@ -37,5 +39,8 @@ export struct HotPage {
       .fontColor('#ffffff')
       .textAlign(TextAlign.Center)
       .backgroundColor('#ff0000')
+  }
+
+  onRefreshStart(changedPropertyName: string) {
   }
 }

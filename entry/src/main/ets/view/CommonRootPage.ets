@@ -6,13 +6,15 @@ export struct CommonRootPage {
   @Prop isShowBackBtn: boolean = true
   @Prop title: string = ''
   @Prop isShowTitleBar: boolean = true
-
   @Prop loadingProps: LoadingProps = {
     isShowInitLoading: false,
     isShowTransparentLoading: false,
     isShowNoData: false,
     isShowNetErr: false,
   }
+  @Link isRefreshing: boolean
+  @Prop enableRefreshing: boolean = true
+
   @Builder
   buildPageContent() {
   }
@@ -32,10 +34,17 @@ export struct CommonRootPage {
   build() {
     Column() {
       if (this.isShowTitleBar) {
-        CommonTitleBar({ isShowBackBtn: false, title: '首页' })
+        CommonTitleBar({ isShowBackBtn: this.isShowBackBtn, title: this.title })
       }
       Stack() {
-        this.buildPageContentParam()
+        Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
+          this.buildPageContentParam()
+        }.onStateChange((refreshStatus: RefreshStatus) => {
+          console.info('refresh state is:' + refreshStatus)
+        })
+        .onRefreshing(() => {
+          this.isRefreshing = true
+        }).pullToRefresh(true)
         if (this.loadingProps.isShowInitLoading) {
           Column() {
             Image($r('app.media.loading')).imgSize()
