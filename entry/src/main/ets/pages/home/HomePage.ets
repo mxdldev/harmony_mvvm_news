@@ -1,11 +1,11 @@
 import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeModel'
-import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { router } from '@kit.ArkUI';
 import { CommonRootPage } from '../../view/CommonRootPage';
 import { LoadingProps } from '../../view/LoadingProps';
-import { HttpRequest, HttpRequestCallback } from '../../http/HttpRequest';
+import { HttpRequestCallback } from '../../http/HttpRequest';
 import { ApiService } from '../../http/ApiService';
+import { RefreshFooter } from '../../view/RefreshFooter';
 
 @Component
 export struct HomePage {
@@ -17,50 +17,55 @@ export struct HomePage {
   }
   @State @Watch('onRefreshStart') isRefreshing: boolean = false
   @State dataList: HomeModelIssueListItemList[] = []
+  @State isLoadMore: boolean = false
 
   onRefreshStart() {
-    console.info("MYTAG", 'isRefreshing:' + this.isRefreshing)
-    const session = rcp.createSession();
-    session.get("https://baobab.kaiyanapp.com/api/v2/feed").then((response) => {
-      console.info(`Response succeeded: '${JSON.stringify(response)}`);
-      let data: HomeModel = JSON.parse(response.toString()!!);
-      let items = data.issueList[0].itemList
-      let list = items.filter((item) => item.type == "video")
-      this.dataList = [...this.dataList, ...list]
-      session.close();
-      this.isRefreshing = false
-    }).catch((err: BusinessError) => {
-      console.error(`Response err: Code is ${err.code}, message is ${JSON.stringify(err)}`);
-      session.close();
-      this.isRefreshing = false
-    });
+    this.getHomeList(true, false)
   }
 
   aboutToAppear() {
+    this.getHomeList(true, true)
+  }
+
+  getHomeList(isReresh: boolean, isFirst: boolean) {
     const currThis = this
+
     class HomeModelCallback implements HttpRequestCallback<HomeModel> {
       onStart(): void {
         console.log('Request started.');
-        currThis.loadingProps.isShowInitLoading = true
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = true
+        }
       }
 
       onComplete(): void {
         console.log('Request completed.');
-        currThis.loadingProps.isShowInitLoading = false
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = false
+        }
+        currThis.isRefreshing = false
+        currThis.isLoadMore = false
       }
 
       onSuccess(response: HomeModel): void {
         console.log('Request succeeded with response:', response);
         let items = response.issueList[0].itemList
         let list = items.filter((item) => item.type == "video")
-        currThis.dataList = list
+        if (isReresh) {
+          currThis.dataList = list
+        } else {
+          currThis.dataList = [...currThis.dataList, ...list]
+        }
       }
 
       onFailure(error: BusinessError): void {
         console.log('Request failed with error:', error);
         currThis.loadingProps.isShowNetErr = true
+        currThis.isRefreshing = false
+        currThis.isLoadMore = false
       }
     }
+
     ApiService.getInstance().getHomeList(new HomeModelCallback());
   }
 
@@ -107,9 +112,14 @@ export struct HomePage {
             })
           }
         })
+        ListItem() {
+          RefreshFooter({ showFooter: this.isLoadMore })
+        }
       }.onReachEnd(() => {
         console.info("MYTAG", "onReachEnd start...")
-      }).enabled(true)
+        this.isLoadMore = true
+        this.getHomeList(false, false)
+      })
     }
 
   }

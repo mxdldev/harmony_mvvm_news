@@ -2,28 +2,66 @@ import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { FocusModel, FocusModelItemList, FocusModelItemListDataItemList } from '../../model/FocusModel';
 import { LoadingProps } from '../../view/LoadingProps';
+import { HttpRequestCallback } from '../../http/HttpRequest';
+import { ApiService } from '../../http/ApiService';
+import { RefreshFooter } from '../../view/RefreshFooter';
 
 @Component
 export struct ForcePage {
   @Link loadingProps: LoadingProps
   @State dataList: FocusModelItemList[] = []
+  @Link @Watch('onRefreshStart') isRefreshing: boolean
+  @State isLoadMore: boolean = false
+
+  onRefreshStart(changedPropertyName: string) {
+    if (this.isRefreshing) {
+      this.getFocusList(true, false)
+    }
+  }
 
   aboutToAppear(): void {
-    this.loadingProps.isShowInitLoading = true
-    const session = rcp.createSession();
-    session.get("https:baobab.kaiyanapp.com/api/v4/tabs/follow").then((response) => {
-      console.info(`Response succeeded: '${JSON.stringify(response)}`);
-      let data: FocusModel = JSON.parse(response.toString()!!);
-      this.dataList = data.itemList
-      session.close();
-      this.loadingProps.isShowInitLoading = false
-      this.loadingProps.isShowNetErr = false
-    }).catch((err: BusinessError) => {
-      console.error(`Response err: Code is ${err.code}, message is ${JSON.stringify(err)}`);
-      session.close();
-      this.loadingProps.isShowInitLoading = false
-      this.loadingProps.isShowNetErr = true
-    });
+    this.getFocusList(true, true)
+  }
+
+  getFocusList(isReresh: boolean, isFirst: boolean) {
+    const currThis = this
+
+    class FocusModelCallback implements HttpRequestCallback<FocusModel> {
+      onStart(): void {
+        console.log('Request started.');
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = true
+        }
+      }
+
+      onComplete(): void {
+        console.log('Request completed.');
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = false
+        }
+        currThis.isRefreshing = false
+        currThis.isLoadMore = false
+      }
+
+      onSuccess(response: FocusModel): void {
+        console.log('Request succeeded with response:', response);
+
+        if (isReresh) {
+          currThis.dataList = response.itemList
+        } else {
+          currThis.dataList = [...currThis.dataList, ...response.itemList]
+        }
+      }
+
+      onFailure(error: BusinessError): void {
+        console.log('Request failed with error:', error);
+        currThis.loadingProps.isShowNetErr = true
+        currThis.isRefreshing = false
+        currThis.isLoadMore = false
+      }
+    }
+
+    ApiService.getInstance().getFocusList(new FocusModelCallback());
   }
 
   build() {
@@ -66,7 +104,14 @@ export struct ForcePage {
             }
           }
         })
-      }.listDirection(Axis.Vertical)
+        ListItem() {
+          RefreshFooter({ showFooter: this.isLoadMore })
+        }
+      }.listDirection(Axis.Vertical).onReachEnd(() => {
+        console.info("MYTAG", "onReachEnd start...")
+        this.isLoadMore = true
+        this.getFocusList(false, false)
+      })
     }
   }
 }

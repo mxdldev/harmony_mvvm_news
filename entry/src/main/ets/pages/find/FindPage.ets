@@ -13,7 +13,7 @@ export struct FindPage {
     isShowNoData: false,
     isShowNetErr: false,
   }
-  @State @Watch('onRefreshStart') isRefreshing: boolean = false
+  @State isRefreshing: boolean = false
 
   build() {
     CommonRootPage({
@@ -24,7 +24,7 @@ export struct FindPage {
     }) {
       Tabs({ index: 0, barPosition: BarPosition.Start }) {
         TabContent() {
-          ForcePage({loadingProps:this.loadingProps})
+          ForcePage({isRefreshing:this.isRefreshing,loadingProps:this.loadingProps})
         }.tabBar(this.TabView('关注'))
 
         TabContent() {
@@ -48,6 +48,5 @@ export struct FindPage {
       .backgroundColor('#d81e06')
   }
 
-  onRefreshStart(changedPropertyName: string) {
-  }
+
 }

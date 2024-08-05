@@ -45,6 +45,7 @@ export struct CommonRootPage {
         .onRefreshing(() => {
           this.isRefreshing = true
         }).pullToRefresh(true)
+
         if (this.loadingProps.isShowInitLoading) {
           Column() {
             Image($r('app.media.loading')).imgSize()

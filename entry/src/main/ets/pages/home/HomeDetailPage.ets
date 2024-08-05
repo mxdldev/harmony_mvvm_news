@@ -6,6 +6,8 @@ import { HomeModel, HomeModelIssueListItemList } from '../../model/HomeModel';
 import { CommonTitleBar } from '../../view/CommonTitleBar';
 import { LoadingProps } from '../../view/LoadingProps';
 import { CommonRootPage } from '../../view/CommonRootPage';
+import { HttpRequestCallback } from '../../http/HttpRequest';
+import { ApiService } from '../../http/ApiService';
 
 @Entry
 @Component
@@ -21,29 +23,53 @@ export struct HomeDetailPage {
   @State dataList: HomeModelIssueListItemList[] = []
   private controller: VideoController | undefined;
   private previewUris: Resource = $r('app.media.landing_image');
-  @State isRefreshing: boolean = false
+  @State @Watch('onRefreshStart') isRefreshing: boolean = false
+
+  onRefreshStart(changedPropertyName: string) {
+    this.getHomeDetail(this.dataId, false)
+  }
 
   aboutToAppear(): void {
-
     const params: DetailPageParams = router.getParams() as DetailPageParams;
     this.dataId = params.id;
     this.playUrl = params.playUrl
     console.info("MYTAG", 'dataId:' + this.dataId + ";playUrl:" + this.playUrl)
 
-    this.loadingProps.isShowInitLoading = true
-    const session = rcp.createSession();
-    session.get("https://baobab.kaiyanapp.com/api/v4/video/related?id=" + this.dataId).then((response) => {
-      console.info(`Response succeeded: '${JSON.stringify(response)}`);
-      let data: HomeModel = JSON.parse(response.toString()!!);
-      this.dataList = data.itemList
-      this.loadingProps.isShowInitLoading = false
-      this.loadingProps.isShowNetErr = false
-    }).catch((err: BusinessError) => {
-      console.error(`Response err: Code is ${err.code}, message is ${JSON.stringify(err)}`);
-      session.close();
-      this.loadingProps.isShowInitLoading = false
-      this.loadingProps.isShowNetErr = true
-    });
+    this.getHomeDetail(this.dataId, true)
+  }
+
+  getHomeDetail(id: number, isFirst: boolean) {
+    const currThis = this
+
+    class HomeModelCallback implements HttpRequestCallback<HomeModel> {
+      onStart(): void {
+        console.log('Request started.');
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = true
+        }
+      }
+
+      onComplete(): void {
+        console.log('Request completed.');
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = false
+        }
+        currThis.isRefreshing = false
+      }
+
+      onSuccess(response: HomeModel): void {
+        console.log('Request succeeded with response:', response);
+        currThis.dataList = response.itemList
+      }
+
+      onFailure(error: BusinessError): void {
+        console.log('Request failed with error:', error);
+        currThis.loadingProps.isShowNetErr = true
+        currThis.isRefreshing = false
+      }
+    }
+
+    ApiService.getInstance().getHomeDetail(this.dataId, new HomeModelCallback());
   }
 
   build() {
