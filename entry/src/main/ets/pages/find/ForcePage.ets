@@ -1,14 +1,13 @@
-import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
-import { FocusModel, FocusModelItemList, FocusModelItemListDataItemList } from '../../model/FocusModel';
-import { LoadingProps } from '../../view/LoadingProps';
+import { FocusModel, FocusModelItemList, FocusModelItemListDataItemList } from '../../http/entity/FocusModel';
 import { HttpRequestCallback } from '../../http/HttpRequest';
 import { ApiService } from '../../http/ApiService';
 import { RefreshFooter } from '../../view/RefreshFooter';
+import { PageState } from '../../view/CommonRootPage';
 
 @Component
 export struct ForcePage {
-  @Link loadingProps: LoadingProps
+  @Link loadingProps: PageState
   @State dataList: FocusModelItemList[] = []
   @Link @Watch('onRefreshStart') isRefreshing: boolean
   @State isLoadMore: boolean = false

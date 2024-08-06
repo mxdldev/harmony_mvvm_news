@@ -1,13 +1,11 @@
-import { CommonRootPage } from '../../view/CommonRootPage'
-import { CommonTitleBar } from '../../view/CommonTitleBar'
-import { LoadingProps } from '../../view/LoadingProps'
+import { CommonRootPage, PageState } from '../../view/CommonRootPage'
 import { Category } from './CategoryPage'
 import { ForcePage } from './ForcePage'
 import { TopicPage } from './TopicPage'
 
 @Component
 export struct FindPage {
-  @State loadingProps: LoadingProps = {
+  @State loadingProps: PageState = {
     isShowInitLoading: false,
     isShowTransparentLoading: false,
     isShowNoData: false,

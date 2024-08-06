@@ -1,14 +1,13 @@
-import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
-import { CategoryModelChild } from '../../model/CategoryModel';
-import { LoadingProps } from '../../view/LoadingProps';
+import { CategoryModelChild } from '../../http/entity/CategoryModel';
 import { HttpRequestCallback } from '../../http/HttpRequest';
 import { ApiService } from '../../http/ApiService';
 import { RefreshFooter } from '../../view/RefreshFooter';
+import { PageState } from '../../view/CommonRootPage';
 
 @Component
 export struct Category {
-  @Link loadingProps: LoadingProps
+  @Link loadingProps: PageState
   @State dataList: CategoryModelChild[] = []
   @Link @Watch('onRefreshStart') isRefreshing: boolean
   @State isLoadMore: boolean = false

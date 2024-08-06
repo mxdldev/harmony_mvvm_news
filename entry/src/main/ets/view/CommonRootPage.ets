@@ -1,12 +1,11 @@
 import { CommonTitleBar } from './CommonTitleBar'
-import { LoadingProps } from './LoadingProps';
 
 @Component
 export struct CommonRootPage {
   @Prop isShowBackBtn: boolean = true
   @Prop title: string = ''
   @Prop isShowTitleBar: boolean = true
-  @Prop loadingProps: LoadingProps = {
+  @Prop loadingProps: PageState = {
     isShowInitLoading: false,
     isShowTransparentLoading: false,
     isShowNoData: false,
@@ -74,4 +73,10 @@ export struct CommonRootPage {
       }
     }.width('100%').height('100%').justifyContent(FlexAlign.Start)
   }
+}
+export interface PageState {
+  isShowInitLoading: boolean;
+  isShowTransparentLoading: boolean;
+  isShowNoData: boolean;
+  isShowNetErr: boolean;
 }

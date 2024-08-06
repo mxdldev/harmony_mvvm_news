@@ -1,15 +1,14 @@
-import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeModel'
 import { BusinessError } from '@kit.BasicServicesKit';
 import { router } from '@kit.ArkUI';
-import { CommonRootPage } from '../../view/CommonRootPage';
-import { LoadingProps } from '../../view/LoadingProps';
+import { CommonRootPage, PageState } from '../../view/CommonRootPage';
 import { HttpRequestCallback } from '../../http/HttpRequest';
 import { ApiService } from '../../http/ApiService';
 import { RefreshFooter } from '../../view/RefreshFooter';
+import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeModel';
 
 @Component
 export struct HomePage {
-  @State loadingProps: LoadingProps = {
+  @State loadingProps: PageState = {
     isShowInitLoading: false,
     isShowTransparentLoading: false,
     isShowNoData: false,

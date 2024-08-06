@@ -1,15 +1,14 @@
-import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
-import { HomeModel, HomeModelIssueListItemList } from '../../model/HomeModel';
-import hotViewModel from '../../viewmodel/HotViewModel';
-import { LoadingProps } from '../../view/LoadingProps';
+import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeModel';
+import hotViewModel from './entity/HotTabList';
 import { HttpRequestCallback } from '../../http/HttpRequest';
 import { ApiService } from '../../http/ApiService';
 import { RefreshFooter } from '../../view/RefreshFooter';
+import { PageState } from '../../view/CommonRootPage';
 
 @Component
 export struct RankPage {
-  @Link loadingProps: LoadingProps
+  @Link loadingProps: PageState
   private rankType = hotViewModel.hotTabTitle[0].rankType
   @State dataList: HomeModelIssueListItemList[] = [];
   @Link @Watch('onRefreshStart') isRefreshing: boolean

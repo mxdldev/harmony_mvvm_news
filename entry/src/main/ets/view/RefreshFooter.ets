@@ -1,6 +1,3 @@
-/**
- * 通用上拉加载底部布局
- */
 @Component
 export struct RefreshFooter {
   @Prop showFooter: boolean

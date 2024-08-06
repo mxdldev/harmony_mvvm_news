@@ -4,7 +4,7 @@ export interface HotTab {
   rankType: string;
 }
 
-export class HotViewModel {
+export class HotTabList {
   hotTabTitle: HotTab[] = [
     {
       index: 0,
@@ -24,6 +24,6 @@ export class HotViewModel {
   ];
 }
 
-let hotViewModel = new HotViewModel();
+let hotViewModel = new HotTabList();
 
 export default hotViewModel;

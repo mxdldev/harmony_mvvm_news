@@ -1,4 +1,4 @@
-import { TabItem } from '../model/TabItem'
+import { TabItem } from '../http/entity/TabItem'
 import { HomePage } from './home/HomePage'
 import { FindPage } from './find/FindPage'
 import { MinePage } from './mine/MinePage'

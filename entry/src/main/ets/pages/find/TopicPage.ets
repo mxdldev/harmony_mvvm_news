@@ -1,15 +1,13 @@
-import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
-import { TopicModel, TopicModelItemList } from '../../model/TopicModel'
-import ImageRegexUtils from '../../util/ImageRegexUtils';
-import { LoadingProps } from '../../view/LoadingProps';
+import { TopicModel, TopicModelItemList } from '../../http/entity/TopicModel'
 import { HttpRequestCallback } from '../../http/HttpRequest';
 import { ApiService } from '../../http/ApiService';
 import { RefreshFooter } from '../../view/RefreshFooter';
+import { PageState } from '../../view/CommonRootPage';
 
 @Component
 export struct TopicPage {
-  @Link loadingProps: LoadingProps
+  @Link loadingProps: PageState
   @State dataList: TopicModelItemList[] = []
   @Link @Watch('onRefreshStart') isRefreshing: boolean
   @State isLoadMore: boolean = false
@@ -71,7 +69,7 @@ export struct TopicPage {
         ForEach(this.dataList, (item: TopicModelItemList, index: number) => {
           ListItem() {
             Stack() {
-              Image(ImageRegexUtils(item.data?.image))
+              Image(transformImageUrl(item.data?.image))
                 .width('100%')
                 .height('210vp')
                 .border({ radius: '10vp' })
@@ -92,3 +90,15 @@ export struct TopicPage {
     }
   }
 }
+const transformImageUrl = (imageUrl: string | undefined): string => {
+  // 定义正则表达式和替换字符串
+  const regex = /^(https?:\/\/)img\.(.*)$/;
+  const replacement = "$1ali-img.$2";
+
+  // 如果 imageUrl 为空或未定义，则返回空字符串
+  if (imageUrl === undefined) return "";
+
+  // 使用正则表达式替换符合条件的部分
+  return imageUrl.replace(regex, replacement);
+};
+

@@ -1,7 +1,7 @@
-import { CategoryModelChild } from '../model/CategoryModel';
-import { FocusModel } from '../model/FocusModel';
-import { TopicModel } from '../model/TopicModel';
+import { CategoryModelChild } from './entity/CategoryModel';
+import { FocusModel } from './entity/FocusModel';
 import { HomeModel } from './entity/HomeModel';
+import { TopicModel } from './entity/TopicModel';
 import { HttpRequest, HttpRequestCallback } from './HttpRequest';
 
 class ApiService {
@@ -63,7 +63,7 @@ class ApiService {
    * 获取热门排行
    * @param callback
    */
-  public getHotRankList(rankType:string,callback: HttpRequestCallback<HomeModel>): void {
+  public getHotRankList(rankType: string, callback: HttpRequestCallback<HomeModel>): void {
     this.httpRequest.get<HomeModel>("api/v4/rankList/videos?strategy=" + rankType, callback);
   }
 }

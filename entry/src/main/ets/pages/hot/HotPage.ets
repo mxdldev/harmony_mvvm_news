@@ -1,11 +1,10 @@
 import { RankPage } from './RankPage'
-import hotViewModel, { HotTab } from '../../viewmodel/HotViewModel';
-import { LoadingProps } from '../../view/LoadingProps';
-import { CommonRootPage } from '../../view/CommonRootPage';
+import hotViewModel, { HotTab } from './entity/HotTabList';
+import { CommonRootPage, PageState } from '../../view/CommonRootPage';
 
 @Component
 export struct HotPage {
-  @State loadingProps: LoadingProps = {
+  @State loadingProps: PageState = {
     isShowInitLoading: false,
     isShowTransparentLoading: false,
     isShowNoData: false,
@@ -38,6 +37,6 @@ export struct HotPage {
       .fontSize('14fp')
       .fontColor('#ffffff')
       .textAlign(TextAlign.Center)
-      .backgroundColor('#ff0000')
+      .backgroundColor('#d81e06')
   }
 }

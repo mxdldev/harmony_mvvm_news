@@ -1,18 +1,15 @@
-import { rcp } from '@kit.RemoteCommunicationKit';
-import { BusinessError } from '@kit.BasicServicesKit';
 import { router } from '@kit.ArkUI';
-import { DetailPageParams } from '../../model/DetailPageParams';
-import { HomeModel, HomeModelIssueListItemList } from '../../model/HomeModel';
-import { CommonTitleBar } from '../../view/CommonTitleBar';
-import { LoadingProps } from '../../view/LoadingProps';
-import { CommonRootPage } from '../../view/CommonRootPage';
+import { DetailPageParams } from '../../http/entity/DetailPageParams';
+import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeModel';
+import { CommonRootPage, PageState } from '../../view/CommonRootPage';
 import { HttpRequestCallback } from '../../http/HttpRequest';
 import { ApiService } from '../../http/ApiService';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 @Entry
 @Component
 export struct HomeDetailPage {
-  @State loadingProps: LoadingProps = {
+  @State loadingProps: PageState = {
     isShowInitLoading: false,
     isShowTransparentLoading: false,
     isShowNoData: false,
