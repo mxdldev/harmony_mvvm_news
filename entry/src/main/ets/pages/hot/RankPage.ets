@@ -3,29 +3,67 @@ import { BusinessError } from '@kit.BasicServicesKit';
 import { HomeModel, HomeModelIssueListItemList } from '../../model/HomeModel';
 import hotViewModel from '../../viewmodel/HotViewModel';
 import { LoadingProps } from '../../view/LoadingProps';
+import { HttpRequestCallback } from '../../http/HttpRequest';
+import { ApiService } from '../../http/ApiService';
+import { RefreshFooter } from '../../view/RefreshFooter';
 
 @Component
 export struct RankPage {
   @Link loadingProps: LoadingProps
   private rankType = hotViewModel.hotTabTitle[0].rankType
   @State dataList: HomeModelIssueListItemList[] = [];
+  @Link @Watch('onRefreshStart') isRefreshing: boolean
+  @State isLoadMore: boolean = false
+
+  onRefreshStart(changedPropertyName: string) {
+    if (this.isRefreshing) {
+      this.getHotRankList(true, false)
+    }
+  }
+
+  getHotRankList(isReresh: boolean, isFirst: boolean) {
+    const currThis = this
+
+    class HotRankCallback implements HttpRequestCallback<HomeModel> {
+      onStart(): void {
+        console.log('Request started.');
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = true
+        }
+      }
+
+      onComplete(): void {
+        console.log('Request completed.');
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = false
+        }
+        currThis.isRefreshing = false
+        currThis.isLoadMore = false
+      }
+
+      onSuccess(response: HomeModel): void {
+        console.log('Request succeeded with response:', response);
+
+        if (isReresh) {
+          currThis.dataList = response.itemList
+        } else {
+          currThis.dataList = [...currThis.dataList, ...response.itemList]
+        }
+      }
+
+      onFailure(error: BusinessError): void {
+        console.log('Request failed with error:', error);
+        currThis.loadingProps.isShowNetErr = true
+        currThis.isRefreshing = false
+        currThis.isLoadMore = false
+      }
+    }
+
+    ApiService.getInstance().getHotRankList(this.rankType, new HotRankCallback());
+  }
 
   aboutToAppear(): void {
-    this.loadingProps.isShowInitLoading = true
-    const session = rcp.createSession();
-    session.get("https:baobab.kaiyanapp.com/api/v4/rankList/videos?strategy=" + this.rankType).then((response) => {
-      console.info(`Response succeeded: '${JSON.stringify(response)}`);
-      let data: HomeModel = JSON.parse(response.toString()!!);
-      this.dataList = data.itemList
-      session.close();
-      this.loadingProps.isShowInitLoading = false
-      this.loadingProps.isShowNetErr = false
-    }).catch((err: BusinessError) => {
-      console.error(`Response err: Code is ${err.code}, message is ${JSON.stringify(err)}`);
-      session.close();
-      this.loadingProps.isShowInitLoading = false
-      this.loadingProps.isShowNetErr = true
-    });
+    this.getHotRankList(true, false)
   }
 
   build() {
@@ -44,7 +82,7 @@ export struct RankPage {
                 .height('50vp')
                 .border({ radius: '25vp' })
               Column() {
-                Text(item.data?.title).width('100%').fontSize('20vp').fontColor('#333333').margin({right:'10vp'})
+                Text(item.data?.title).width('100%').fontSize('20vp').fontColor('#333333').margin({ right: '10vp' })
                 Text(item.data?.title).fontSize('13vp').fontColor('#999999').margin({ top: '3vp' })
               }.width('100%').margin({ left: '5vp' }).alignItems(HorizontalAlign.Start)
             }
@@ -60,6 +98,15 @@ export struct RankPage {
           })
         }
       })
-    }
+      if (this.dataList.length > 0) {
+        ListItem() {
+          RefreshFooter({ showFooter: this.isLoadMore })
+        }
+      }
+    }.listDirection(Axis.Vertical).onReachEnd(() => {
+      console.info("MYTAG", "onReachEnd start...")
+      this.isLoadMore = true
+      this.getHotRankList(false, false)
+    })
   }
 }

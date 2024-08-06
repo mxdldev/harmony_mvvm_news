@@ -19,20 +19,20 @@ export struct FindPage {
     CommonRootPage({
       isShowBackBtn: false,
       title: "发现",
-      loadingProps:this.loadingProps,
+      loadingProps: this.loadingProps,
       isRefreshing: this.isRefreshing
     }) {
       Tabs({ index: 0, barPosition: BarPosition.Start }) {
         TabContent() {
-          ForcePage({isRefreshing:this.isRefreshing,loadingProps:this.loadingProps})
+          ForcePage({ isRefreshing: this.isRefreshing, loadingProps: this.loadingProps })
         }.tabBar(this.TabView('关注'))
 
         TabContent() {
-          Category({loadingProps:this.loadingProps})
+          Category({ isRefreshing: this.isRefreshing, loadingProps: this.loadingProps })
         }.tabBar(this.TabView('分类'))
 
         TabContent() {
-          TopicPage({loadingProps:this.loadingProps})
+          TopicPage({ isRefreshing: this.isRefreshing, loadingProps: this.loadingProps })
         }.tabBar(this.TabView('主题'))
       }.width('100%').height('100%')
     }
@@ -47,6 +47,4 @@ export struct FindPage {
       .textAlign(TextAlign.Center)
       .backgroundColor('#d81e06')
   }
-
-
 }

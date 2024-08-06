@@ -1,4 +1,6 @@
+import { CategoryModelChild } from '../model/CategoryModel';
 import { FocusModel } from '../model/FocusModel';
+import { TopicModel } from '../model/TopicModel';
 import { HomeModel } from './entity/HomeModel';
 import { HttpRequest, HttpRequestCallback } from './HttpRequest';
 
@@ -39,6 +41,30 @@ class ApiService {
    */
   public getFocusList(callback: HttpRequestCallback<FocusModel>): void {
     this.httpRequest.get<FocusModel>("api/v4/tabs/follow", callback);
+  }
+
+  /**
+   * 获取发现分类列表
+   * @param callback
+   */
+  public getCategoryList(callback: HttpRequestCallback<CategoryModelChild[]>): void {
+    this.httpRequest.get<CategoryModelChild[]>("api/v4/categories", callback);
+  }
+
+  /**
+   * 获取发现主题列表
+   * @param callback
+   */
+  public getTopicList(callback: HttpRequestCallback<TopicModel>): void {
+    this.httpRequest.get<TopicModel>("api/v3/specialTopics", callback);
+  }
+
+  /**
+   * 获取热门排行
+   * @param callback
+   */
+  public getHotRankList(rankType:string,callback: HttpRequestCallback<HomeModel>): void {
+    this.httpRequest.get<HomeModel>("api/v4/rankList/videos?strategy=" + rankType, callback);
   }
 }
 

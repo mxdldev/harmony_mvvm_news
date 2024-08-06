@@ -11,7 +11,7 @@ export struct HotPage {
     isShowNoData: false,
     isShowNetErr: false,
   }
-  @State @Watch('onRefreshStart') isRefreshing: boolean = false
+  @State isRefreshing: boolean = false
 
   build() {
     CommonRootPage({
@@ -23,7 +23,7 @@ export struct HotPage {
       Tabs() {
         ForEach(hotViewModel.hotTabTitle, (hotTab: HotTab, index) => {
           TabContent() {
-            RankPage({ rankType: hotTab.rankType, loadingProps: this.loadingProps })
+            RankPage({ isRefreshing: this.isRefreshing, rankType: hotTab.rankType, loadingProps: this.loadingProps })
           }.tabBar(this.tabItem(hotTab.title))
         })
       }
@@ -39,8 +39,5 @@ export struct HotPage {
       .fontColor('#ffffff')
       .textAlign(TextAlign.Center)
       .backgroundColor('#ff0000')
-  }
-
-  onRefreshStart(changedPropertyName: string) {
   }
 }

@@ -104,8 +104,10 @@ export struct ForcePage {
             }
           }
         })
-        ListItem() {
-          RefreshFooter({ showFooter: this.isLoadMore })
+        if (this.dataList.length > 0) {
+          ListItem() {
+            RefreshFooter({ showFooter: this.isLoadMore })
+          }
         }
       }.listDirection(Axis.Vertical).onReachEnd(() => {
         console.info("MYTAG", "onReachEnd start...")

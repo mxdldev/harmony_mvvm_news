@@ -2,27 +2,68 @@ import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { CategoryModelChild } from '../../model/CategoryModel';
 import { LoadingProps } from '../../view/LoadingProps';
+import { HttpRequestCallback } from '../../http/HttpRequest';
+import { ApiService } from '../../http/ApiService';
+import { RefreshFooter } from '../../view/RefreshFooter';
 
 @Component
-export struct Category{
+export struct Category {
   @Link loadingProps: LoadingProps
   @State dataList: CategoryModelChild[] = []
-  aboutToAppear(): void {
-    this.loadingProps.isShowInitLoading = true
-    const session = rcp.createSession();
-    session.get("https://baobab.kaiyanapp.com/api/v4/categories").then((response) => {
-      console.info(`Response succeeded: '${JSON.stringify(response)}`);
-      this.dataList = JSON.parse(response.toString()!!);
-      session.close();
-      this.loadingProps.isShowInitLoading = false
-      this.loadingProps.isShowNetErr = false
-    }).catch((err: BusinessError) => {
-      console.error(`Response err: Code is ${err.code}, message is ${JSON.stringify(err)}`);
-      session.close();
-      this.loadingProps.isShowInitLoading = false
-      this.loadingProps.isShowNetErr = true
-    });
+  @Link @Watch('onRefreshStart') isRefreshing: boolean
+  @State isLoadMore: boolean = false
+
+  onRefreshStart(changedPropertyName: string) {
+    if (this.isRefreshing) {
+      this.getCategoryList(true, false)
+    }
   }
+
+  getCategoryList(isReresh: boolean, isFirst: boolean) {
+    const currThis = this
+
+    class CategoryModelChildCallback implements HttpRequestCallback<CategoryModelChild[]> {
+      onStart(): void {
+        console.log('Request started.');
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = true
+        }
+      }
+
+      onComplete(): void {
+        console.log('Request completed.');
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = false
+        }
+        currThis.isRefreshing = false
+        currThis.isLoadMore = false
+      }
+
+      onSuccess(response: CategoryModelChild[]): void {
+        console.log('Request succeeded with response:', response);
+
+        if (isReresh) {
+          currThis.dataList = response
+        } else {
+          currThis.dataList = [...currThis.dataList, ...response]
+        }
+      }
+
+      onFailure(error: BusinessError): void {
+        console.log('Request failed with error:', error);
+        currThis.loadingProps.isShowNetErr = true
+        currThis.isRefreshing = false
+        currThis.isLoadMore = false
+      }
+    }
+
+    ApiService.getInstance().getCategoryList(new CategoryModelChildCallback());
+  }
+
+  aboutToAppear(): void {
+    this.getCategoryList(true, true)
+  }
+
   build() {
     Column() {
       List({ space: 10, initialIndex: 0 }) {
@@ -44,16 +85,25 @@ export struct Category{
               }.width('100%').height('210vp')
 
               Row() {
-                Image(item.headerImage).width('50vp').height('50vp').border({radius:'25vp'})
+                Image(item.headerImage).width('50vp').height('50vp').border({ radius: '25vp' })
                 Column() {
                   Text(item.name).fontColor('#333333').fontSize('20fp')
-                  Text(item.description).fontColor('#999999').fontSize('13fp').margin({top:'5vp'})
-                }.alignItems(HorizontalAlign.Start).margin({left:'5vp'})
-              }.width('100%').height('60vp').padding({left:'5vp',right:'5vp'})
+                  Text(item.description).fontColor('#999999').fontSize('13fp').margin({ top: '5vp' })
+                }.alignItems(HorizontalAlign.Start).margin({ left: '5vp' })
+              }.width('100%').height('60vp').padding({ left: '5vp', right: '5vp' })
             }.width('100%')
           }
         })
-      }
+        if (this.dataList.length > 0) {
+          ListItem() {
+            RefreshFooter({ showFooter: this.isLoadMore })
+          }
+        }
+      }.listDirection(Axis.Vertical).onReachEnd(() => {
+        console.info("MYTAG", "onReachEnd start...")
+        this.isLoadMore = true
+        this.getCategoryList(false, false)
+      })
     }
   }
 }

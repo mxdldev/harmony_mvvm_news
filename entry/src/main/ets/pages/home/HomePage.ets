@@ -112,8 +112,10 @@ export struct HomePage {
             })
           }
         })
-        ListItem() {
-          RefreshFooter({ showFooter: this.isLoadMore })
+        if (this.dataList.length > 0) {
+          ListItem() {
+            RefreshFooter({ showFooter: this.isLoadMore })
+          }
         }
       }.onReachEnd(() => {
         console.info("MYTAG", "onReachEnd start...")
@@ -121,7 +123,6 @@ export struct HomePage {
         this.getHomeList(false, false)
       })
     }
-
   }
 }
 
