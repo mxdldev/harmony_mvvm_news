@@ -1,6 +1,10 @@
 {
   "string": [
     {
+      "name": "app_name",
+      "value": "news"
+    },
+    {
       "name": "module_desc",
       "value": "module description"
     },
