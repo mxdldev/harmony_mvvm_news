@@ -3,8 +3,8 @@ import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeMod
 import hotViewModel from './entity/HotTabList';
 import { HttpRequestCallback } from '../../http/HttpRequest';
 import { ApiService } from '../../http/ApiService';
-import { RefreshFooter } from '../../view/RefreshFooter';
-import { PageState } from '../../view/CommonRootPage';
+import { RefreshFooter } from '../../mvvm/view/RefreshFooter';
+import { PageState } from '../../mvvm/view/CommonRootPage';
 
 @Component
 export struct RankPage {

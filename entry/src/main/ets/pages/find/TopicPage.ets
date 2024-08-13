@@ -2,8 +2,8 @@ import { BusinessError } from '@kit.BasicServicesKit';
 import { TopicModel, TopicModelItemList } from '../../http/entity/TopicModel'
 import { HttpRequestCallback } from '../../http/HttpRequest';
 import { ApiService } from '../../http/ApiService';
-import { RefreshFooter } from '../../view/RefreshFooter';
-import { PageState } from '../../view/CommonRootPage';
+import { RefreshFooter } from '../../mvvm/view/RefreshFooter';
+import { PageState } from '../../mvvm/view/CommonRootPage';
 
 @Component
 export struct TopicPage {

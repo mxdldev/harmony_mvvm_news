@@ -1,6 +1,6 @@
 import { RankPage } from './RankPage'
 import hotViewModel, { HotTab } from './entity/HotTabList';
-import { CommonRootPage, PageState } from '../../view/CommonRootPage';
+import { CommonRootPage, PageState } from '../../mvvm/view/CommonRootPage';
 
 @Component
 export struct HotPage {

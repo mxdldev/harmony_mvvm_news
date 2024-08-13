@@ -1,72 +1,20 @@
 import { router } from '@kit.ArkUI';
 import { DetailPageParams } from '../../http/entity/DetailPageParams';
-import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeModel';
-import { CommonRootPage, PageState } from '../../view/CommonRootPage';
-import { HttpRequestCallback } from '../../http/HttpRequest';
-import { ApiService } from '../../http/ApiService';
-import { BusinessError } from '@kit.BasicServicesKit';
+import { HomeModelIssueListItemList } from '../../http/entity/HomeModel';
+import { CommonRootPage } from '../../mvvm/view/CommonRootPage';
+import { HomeDetailViewModel } from './viewmodel/HomeDetailViewModel';
 
 @Entry
 @Component
 export struct HomeDetailPage {
-  @State loadingProps: PageState = {
-    isShowInitLoading: false,
-    isShowTransparentLoading: false,
-    isShowNoData: false,
-    isShowNetErr: false,
-  }
-  @State dataId: number = 0
-  @State playUrl: string = ''
-  @State dataList: HomeModelIssueListItemList[] = []
-  private controller: VideoController | undefined;
-  private previewUris: Resource = $r('app.media.landing_image');
-  @State @Watch('onRefreshStart') isRefreshing: boolean = false
-
-  onRefreshStart(changedPropertyName: string) {
-    this.getHomeDetail(this.dataId, false)
-  }
+  @State viewModel: HomeDetailViewModel = new HomeDetailViewModel()
 
   aboutToAppear(): void {
     const params: DetailPageParams = router.getParams() as DetailPageParams;
-    this.dataId = params.id;
-    this.playUrl = params.playUrl
-    console.info("MYTAG", 'dataId:' + this.dataId + ";playUrl:" + this.playUrl)
-
-    this.getHomeDetail(this.dataId, true)
-  }
-
-  getHomeDetail(id: number, isFirst: boolean) {
-    const currThis = this
-
-    class HomeModelCallback implements HttpRequestCallback<HomeModel> {
-      onStart(): void {
-        console.log('Request started.');
-        if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = true
-        }
-      }
-
-      onComplete(): void {
-        console.log('Request completed.');
-        if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = false
-        }
-        currThis.isRefreshing = false
-      }
-
-      onSuccess(response: HomeModel): void {
-        console.log('Request succeeded with response:', response);
-        currThis.dataList = response.itemList
-      }
-
-      onFailure(error: BusinessError): void {
-        console.log('Request failed with error:', error);
-        currThis.loadingProps.isShowNetErr = true
-        currThis.isRefreshing = false
-      }
-    }
-
-    ApiService.getInstance().getHomeDetail(this.dataId, new HomeModelCallback());
+    this.viewModel.dataId = params.id;
+    this.viewModel.playUrl = params.playUrl
+    console.info("MYTAG", 'dataId:' + this.viewModel.dataId + ";playUrl:" + this.viewModel.playUrl)
+    this.viewModel.getHomeDetail(true)
   }
 
   build() {
@@ -74,17 +22,25 @@ export struct HomeDetailPage {
       CommonRootPage({
         isShowBackBtn: true,
         title: "视频详情",
-        loadingProps: this.loadingProps,
-        isRefreshing: this.isRefreshing
+        loadingProps: this.viewModel.loadingProps,
+        isRefreshing: this.viewModel.isRefreshing,
+        onRefresh: () => {
+          console.info("MYTAG","onReresh start...")
+          this.viewModel.getHomeDetail(false)
+        }
       }) {
         Column() {
-          Video({ src: this.playUrl, previewUri: this.previewUris, controller: this.controller })
+          Video({
+            src: this.viewModel.playUrl,
+            previewUri: this.viewModel.previewUris,
+            controller: this.viewModel.controller
+          })
             .width('100%')
             .height('250vp')
             .autoPlay(true)
             .objectFit(ImageFit.Fill)
           List() {
-            ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {
+            ForEach(this.viewModel.dataList, (item: HomeModelIssueListItemList, index: number) => {
               ListItem() {
                 Row() {
                   Image(item.data?.cover?.feed).width('100vp').height('100%').border({ radius: '5vp' })
@@ -102,7 +58,7 @@ export struct HomeDetailPage {
                       .margin({ top: '5vp' })
                   }.layoutWeight(1).height('100%').margin({ left: '10vp' }).alignItems(HorizontalAlign.Start)
                 }.width('100%').height('70vp').margin('10vp').onClick(() => {
-                  this.playUrl = item.data?.playUrl as string
+                  this.viewModel.playUrl = item.data?.playUrl as string
                 })
               }
             })

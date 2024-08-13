@@ -11,8 +11,10 @@ export struct CommonRootPage {
     isShowNoData: false,
     isShowNetErr: false,
   }
-  @Link isRefreshing: boolean
+  @Prop isRefreshing: boolean
   @Prop enableRefreshing: boolean = true
+  onRefresh: () => void = () => {
+  }
 
   @Builder
   buildPageContent() {
@@ -42,7 +44,7 @@ export struct CommonRootPage {
           console.info('refresh state is:' + refreshStatus)
         })
         .onRefreshing(() => {
-          this.isRefreshing = true
+          this.onRefresh()
         }).pullToRefresh(true)
 
         if (this.loadingProps.isShowInitLoading) {
@@ -74,6 +76,7 @@ export struct CommonRootPage {
     }.width('100%').height('100%').justifyContent(FlexAlign.Start)
   }
 }
+
 export interface PageState {
   isShowInitLoading: boolean;
   isShowTransparentLoading: boolean;

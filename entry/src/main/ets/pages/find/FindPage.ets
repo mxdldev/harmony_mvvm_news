@@ -1,4 +1,4 @@
-import { CommonRootPage, PageState } from '../../view/CommonRootPage'
+import { CommonRootPage, PageState } from '../../mvvm/view/CommonRootPage'
 import { Category } from './CategoryPage'
 import { ForcePage } from './ForcePage'
 import { TopicPage } from './TopicPage'

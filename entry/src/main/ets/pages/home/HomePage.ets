@@ -1,82 +1,29 @@
-import { BusinessError } from '@kit.BasicServicesKit';
 import { router } from '@kit.ArkUI';
-import { CommonRootPage, PageState } from '../../view/CommonRootPage';
-import { HttpRequestCallback } from '../../http/HttpRequest';
-import { ApiService } from '../../http/ApiService';
-import { RefreshFooter } from '../../view/RefreshFooter';
-import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeModel';
+import { CommonRootPage, PageState } from '../../mvvm/view/CommonRootPage';
+import { RefreshFooter } from '../../mvvm/view/RefreshFooter';
+import { HomeModelIssueListItemList } from '../../http/entity/HomeModel';
+import { HomePageViewModel } from './viewmodel/HomePageViewModel';
 
 @Component
 export struct HomePage {
-  @State loadingProps: PageState = {
-    isShowInitLoading: false,
-    isShowTransparentLoading: false,
-    isShowNoData: false,
-    isShowNetErr: false,
-  }
-  @State @Watch('onRefreshStart') isRefreshing: boolean = false
-  @State dataList: HomeModelIssueListItemList[] = []
-  @State isLoadMore: boolean = false
-
-  onRefreshStart() {
-    this.getHomeList(true, false)
-  }
+  @State viewModel: HomePageViewModel = new HomePageViewModel()
 
   aboutToAppear() {
-    this.getHomeList(true, true)
-  }
-
-  getHomeList(isReresh: boolean, isFirst: boolean) {
-    const currThis = this
-
-    class HomeModelCallback implements HttpRequestCallback<HomeModel> {
-      onStart(): void {
-        console.log('Request started.');
-        if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = true
-        }
-      }
-
-      onComplete(): void {
-        console.log('Request completed.');
-        if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = false
-        }
-        currThis.isRefreshing = false
-        currThis.isLoadMore = false
-      }
-
-      onSuccess(response: HomeModel): void {
-        console.log('Request succeeded with response:', response);
-        let items = response.issueList[0].itemList
-        let list = items.filter((item) => item.type == "video")
-        if (isReresh) {
-          currThis.dataList = list
-        } else {
-          currThis.dataList = [...currThis.dataList, ...list]
-        }
-      }
-
-      onFailure(error: BusinessError): void {
-        console.log('Request failed with error:', error);
-        currThis.loadingProps.isShowNetErr = true
-        currThis.isRefreshing = false
-        currThis.isLoadMore = false
-      }
-    }
-
-    ApiService.getInstance().getHomeList(new HomeModelCallback());
+    this.viewModel.getHomeList(true, true)
   }
 
   build() {
     CommonRootPage({
       isShowBackBtn: false,
       title: "首页",
-      loadingProps: this.loadingProps,
-      isRefreshing: this.isRefreshing
+      loadingProps: this.viewModel.loadingProps,
+      isRefreshing: this.viewModel.isRefreshing,
+      onRefresh: () => {
+        this.viewModel.getHomeList(true, false)
+      }
     }) {
       List({ space: 10, initialIndex: 0 }) {
-        ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {
+        ForEach(this.viewModel.dataList, (item: HomeModelIssueListItemList, index: number) => {
           ListItem() {
             Column() {
               Stack() {
@@ -111,15 +58,15 @@ export struct HomePage {
             })
           }
         })
-        if (this.dataList.length > 0) {
+        if (this.viewModel.dataList.length > 0) {
           ListItem() {
-            RefreshFooter({ showFooter: this.isLoadMore })
+            RefreshFooter({ showFooter: this.viewModel.isLoadMore })
           }
         }
       }.onReachEnd(() => {
         console.info("MYTAG", "onReachEnd start...")
-        this.isLoadMore = true
-        this.getHomeList(false, false)
+        this.viewModel.isLoadMore = true
+        this.viewModel.getHomeList(false, false)
       })
     }
   }
