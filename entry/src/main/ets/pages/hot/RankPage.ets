@@ -11,14 +11,7 @@ export struct RankPage {
   @Link loadingProps: PageState
   private rankType = hotViewModel.hotTabTitle[0].rankType
   @State dataList: HomeModelIssueListItemList[] = [];
-  @Link @Watch('onRefreshStart') isRefreshing: boolean
-  @State isLoadMore: boolean = false
 
-  onRefreshStart(changedPropertyName: string) {
-    if (this.isRefreshing) {
-      this.getHotRankList(true, false)
-    }
-  }
 
   getHotRankList(isReresh: boolean, isFirst: boolean) {
     const currThis = this

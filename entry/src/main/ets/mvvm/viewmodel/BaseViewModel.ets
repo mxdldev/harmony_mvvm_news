@@ -1,4 +1,5 @@
 import { PageState } from '../view/CommonRootPage'
+@Observed
 export class BaseViewModel{
   loadingProps: PageState = {
     isShowInitLoading: false,

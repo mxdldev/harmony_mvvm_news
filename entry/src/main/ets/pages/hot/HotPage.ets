@@ -1,26 +1,23 @@
 import { RankPage } from './RankPage'
 import hotViewModel, { HotTab } from './entity/HotTabList';
 import { CommonRootPage, PageState } from '../../mvvm/view/CommonRootPage';
+import { HomePageModel } from '../home/model/HomePageModel';
+import { HomePageViewModel } from '../home/viewmodel/HomePageViewModel';
 
 @Component
 export struct HotPage {
-  @State loadingProps: PageState = {
-    isShowInitLoading: false,
-    isShowTransparentLoading: false,
-    isShowNoData: false,
-    isShowNetErr: false,
-  }
-  @State isRefreshing: boolean = false
+  viewModel = new HomePageViewModel()
 
+  @State hotTabTitle:HotTab[] = hotViewModel.hotTabTitle
   build() {
     CommonRootPage({
       isShowBackBtn: false,
       title: "热门",
-      loadingProps: this.loadingProps,
-      isRefreshing: this.isRefreshing
+      loadingProps: this.viewModel.loadingProps,
+      isRefreshing: this.viewModel.isRefreshing
     }) {
       Tabs() {
-        ForEach(hotViewModel.hotTabTitle, (hotTab: HotTab, index) => {
+        ForEach(this.hotTabTitle, (hotTab: HotTab, index) => {
           TabContent() {
             RankPage({ isRefreshing: this.isRefreshing, rankType: hotTab.rankType, loadingProps: this.loadingProps })
           }.tabBar(this.tabItem(hotTab.title))

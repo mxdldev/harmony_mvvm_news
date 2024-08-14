@@ -1,66 +1,11 @@
-import { BusinessError } from '@kit.BasicServicesKit';
 import { FocusModel, FocusModelItemList, FocusModelItemListDataItemList } from '../../http/entity/FocusModel';
-import { HttpRequestCallback } from '../../http/HttpRequest';
-import { ApiService } from '../../http/ApiService';
 import { RefreshFooter } from '../../mvvm/view/RefreshFooter';
-import { PageState } from '../../mvvm/view/CommonRootPage';
 
 @Component
 export struct ForcePage {
-  @Link loadingProps: PageState
-  @State dataList: FocusModelItemList[] = []
-  @Link @Watch('onRefreshStart') isRefreshing: boolean
-  @State isLoadMore: boolean = false
+  @Prop dataList: FocusModelItemList[] = []
 
-  onRefreshStart(changedPropertyName: string) {
-    if (this.isRefreshing) {
-      this.getFocusList(true, false)
-    }
-  }
-
-  aboutToAppear(): void {
-    this.getFocusList(true, true)
-  }
-
-  getFocusList(isReresh: boolean, isFirst: boolean) {
-    const currThis = this
-
-    class FocusModelCallback implements HttpRequestCallback<FocusModel> {
-      onStart(): void {
-        console.log('Request started.');
-        if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = true
-        }
-      }
-
-      onComplete(): void {
-        console.log('Request completed.');
-        if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = false
-        }
-        currThis.isRefreshing = false
-        currThis.isLoadMore = false
-      }
-
-      onSuccess(response: FocusModel): void {
-        console.log('Request succeeded with response:', response);
-
-        if (isReresh) {
-          currThis.dataList = response.itemList
-        } else {
-          currThis.dataList = [...currThis.dataList, ...response.itemList]
-        }
-      }
-
-      onFailure(error: BusinessError): void {
-        console.log('Request failed with error:', error);
-        currThis.loadingProps.isShowNetErr = true
-        currThis.isRefreshing = false
-        currThis.isLoadMore = false
-      }
-    }
-
-    ApiService.getInstance().getFocusList(new FocusModelCallback());
+  onLoadMore: (isReresh: boolean, isFirst: boolean) => void = (isReresh,isFirst) => {
   }
 
   build() {
@@ -105,14 +50,19 @@ export struct ForcePage {
         })
         if (this.dataList.length > 0) {
           ListItem() {
-            RefreshFooter({ showFooter: this.isLoadMore })
+            RefreshFooter({ showFooter: true })
           }
         }
       }.listDirection(Axis.Vertical).onReachEnd(() => {
-        console.info("MYTAG", "onReachEnd start...")
-        this.isLoadMore = true
-        this.getFocusList(false, false)
-      })
+        if (this.dataList.length > 0) {
+          console.info("MYTAG", "onReachEnd start...")
+          this.onLoadMore(false,false)
+        }else{
+          this.onLoadMore(true,true)
+        }
+      }
+
+      )
     }
   }
 }

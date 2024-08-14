@@ -1,66 +1,10 @@
-import { BusinessError } from '@kit.BasicServicesKit';
 import { CategoryModelChild } from '../../http/entity/CategoryModel';
-import { HttpRequestCallback } from '../../http/HttpRequest';
-import { ApiService } from '../../http/ApiService';
 import { RefreshFooter } from '../../mvvm/view/RefreshFooter';
-import { PageState } from '../../mvvm/view/CommonRootPage';
 
 @Component
 export struct Category {
-  @Link loadingProps: PageState
-  @State dataList: CategoryModelChild[] = []
-  @Link @Watch('onRefreshStart') isRefreshing: boolean
-  @State isLoadMore: boolean = false
-
-  onRefreshStart(changedPropertyName: string) {
-    if (this.isRefreshing) {
-      this.getCategoryList(true, false)
-    }
-  }
-
-  getCategoryList(isReresh: boolean, isFirst: boolean) {
-    const currThis = this
-
-    class CategoryModelChildCallback implements HttpRequestCallback<CategoryModelChild[]> {
-      onStart(): void {
-        console.log('Request started.');
-        if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = true
-        }
-      }
-
-      onComplete(): void {
-        console.log('Request completed.');
-        if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = false
-        }
-        currThis.isRefreshing = false
-        currThis.isLoadMore = false
-      }
-
-      onSuccess(response: CategoryModelChild[]): void {
-        console.log('Request succeeded with response:', response);
-
-        if (isReresh) {
-          currThis.dataList = response
-        } else {
-          currThis.dataList = [...currThis.dataList, ...response]
-        }
-      }
-
-      onFailure(error: BusinessError): void {
-        console.log('Request failed with error:', error);
-        currThis.loadingProps.isShowNetErr = true
-        currThis.isRefreshing = false
-        currThis.isLoadMore = false
-      }
-    }
-
-    ApiService.getInstance().getCategoryList(new CategoryModelChildCallback());
-  }
-
-  aboutToAppear(): void {
-    this.getCategoryList(true, true)
+  @Prop dataList: CategoryModelChild[] = []
+  onLoadMore: () => void = () => {
   }
 
   build() {
@@ -95,13 +39,12 @@ export struct Category {
         })
         if (this.dataList.length > 0) {
           ListItem() {
-            RefreshFooter({ showFooter: this.isLoadMore })
+            RefreshFooter({ showFooter: true })
           }
         }
       }.listDirection(Axis.Vertical).onReachEnd(() => {
         console.info("MYTAG", "onReachEnd start...")
-        this.isLoadMore = true
-        this.getCategoryList(false, false)
+        this.onLoadMore()
       })
     }
   }
