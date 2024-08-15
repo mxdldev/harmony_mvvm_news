@@ -71,7 +71,6 @@ export struct CommonRootPage {
     }.width('100%').height('100%').justifyContent(FlexAlign.Start)
   }
 }
-
 export class PageState {
   isShowInitLoading: boolean = false;
   isShowTransparentLoading: boolean = false;
