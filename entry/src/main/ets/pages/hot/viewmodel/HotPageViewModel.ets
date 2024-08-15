@@ -1,4 +1,3 @@
-import { ApiService } from '../../../http/ApiService';
 import { HomeModel } from '../../../http/entity/HomeModel';
 import { HttpRequestCallback } from '../../../http/HttpRequest';
 import { BaseViewModel } from '../../../mvvm/viewmodel/BaseViewModel';
@@ -9,7 +8,10 @@ import { HotPageModel } from '../model/HotPageModel';
 export class HotPageViewModel extends BaseViewModel {
   model = new HotPageModel()
   hotTabTitle: HotTab[] = hotViewModel.hotTabTitle
+  index: number = 0
+
   getHotRankList(hotTab: HotTab, isReresh: boolean, isFirst: boolean) {
+    console.info("MYTAG", "getHotRankList start,isReresh:" + isReresh + ",isFirst:" + isFirst)
     const currThis = this
 
     class HotRankCallback implements HttpRequestCallback<HomeModel> {
@@ -45,6 +47,9 @@ export class HotPageViewModel extends BaseViewModel {
         currThis.loadingProps.isShowNetErr = true
         currThis.isRefreshing = false
         currThis.isLoadMore = false
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = false
+        }
       }
     }
 

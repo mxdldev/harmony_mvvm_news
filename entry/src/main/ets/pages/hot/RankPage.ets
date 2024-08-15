@@ -5,7 +5,7 @@ import { HotTab } from './entity/HotTabList';
 @Component
 export struct RankPage {
   @ObjectLink hotTab: HotTab
-  onLoadMore: (hotTab: HotTab, isReresh: boolean, isFirst: boolean) => void = (hotTab, isReresh, isFirst) => {
+  onLoadMore: (hotTab: HotTab) => void = (hotTab) => {
   }
 
   build() {
@@ -46,11 +46,9 @@ export struct RankPage {
         }
       }
     }.listDirection(Axis.Vertical).onReachEnd(() => {
+      console.info("MYTAG", "onReachEnd start...")
       if (this.hotTab.dataList.length > 0) {
-        console.info("MYTAG", "onReachEnd start...")
-        this.onLoadMore(this.hotTab, false, false)
-      } else {
-        this.onLoadMore(this.hotTab, true, true)
+        this.onLoadMore(this.hotTab)
       }
     })
   }

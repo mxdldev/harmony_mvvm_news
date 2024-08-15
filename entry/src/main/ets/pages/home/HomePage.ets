@@ -9,7 +9,7 @@ export struct HomePage {
   @State viewModel: HomePageViewModel = new HomePageViewModel()
 
   aboutToAppear() {
-    this.viewModel.getHomeList(true, true)
+    this.viewModel.getHomeList(false, true)
   }
 
   build() {
@@ -41,10 +41,10 @@ export struct HomePage {
               }.width('100%').height('210vp')
 
               Row() {
-                Image(item.data?.author.icon).width('50vp').height('50vp').border({ radius: '25vp' })
+                Image(item.data?.author?.icon).width('50vp').height('50vp').border({ radius: '25vp' })
                 Column() {
-                  Text(item.data?.author.name).fontColor('#333333').fontSize('20fp')
-                  Text(item.data?.author.name).fontColor('#999999').fontSize('13fp').margin({ top: '5vp' })
+                  Text(item.data?.author?.name).fontColor('#333333').fontSize('20fp')
+                  Text(item.data?.author?.name).fontColor('#999999').fontSize('13fp').margin({ top: '5vp' })
                 }.alignItems(HorizontalAlign.Start).margin({ left: '5vp' })
               }.width('100%').height('60vp').padding({ left: '5vp', right: '5vp' })
             }.width('100%').onClick(() => {
@@ -65,8 +65,10 @@ export struct HomePage {
         }
       }.onReachEnd(() => {
         console.info("MYTAG", "onReachEnd start...")
-        this.viewModel.isLoadMore = true
-        this.viewModel.getHomeList(false, false)
+        if(this.viewModel.dataList.length > 0){
+          this.viewModel.isLoadMore = true
+          this.viewModel.getHomeList(false, false)
+        }
       })
     }
   }

@@ -12,10 +12,10 @@ export class FindPageViewModel extends BaseViewModel {
   dataListFocusModelItemList: FocusModelItemList[] = []
   dataListCategoryModelChild: CategoryModelChild[] = []
   dataListTopicModelItemList: TopicModelItemList[] = []
-
+  index: number = 0
   getFocusList(isReresh: boolean, isFirst: boolean) {
+    console.info("MYTAG","getFocusList start,isReresh:"+isReresh+",isFirst:"+isFirst)
     const currThis = this
-
     class FocusModelCallback implements HttpRequestCallback<FocusModel> {
       onStart(): void {
         console.log('Request started.');
@@ -57,8 +57,8 @@ export class FindPageViewModel extends BaseViewModel {
 
 
   getCategoryList(isReresh: boolean, isFirst: boolean) {
+    console.info("MYTAG","getCategoryList start,isReresh:"+isReresh+",isFirst:"+isFirst)
     const currThis = this
-
     class CategoryModelChildCallback implements HttpRequestCallback<CategoryModelChild[]> {
       onStart(): void {
         console.log('Request started.');
@@ -99,8 +99,8 @@ export class FindPageViewModel extends BaseViewModel {
   }
 
   getTopicList(isReresh: boolean, isFirst: boolean) {
+    console.info("MYTAG","getTopicList start,isReresh:"+isReresh+",isFirst:"+isFirst)
     const currThis = this
-
     class TopicModelCallback implements HttpRequestCallback<TopicModel> {
       onStart(): void {
         console.log('Request started.');

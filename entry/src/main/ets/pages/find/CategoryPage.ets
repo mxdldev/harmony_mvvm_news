@@ -2,7 +2,7 @@ import { CategoryModelChild } from '../../http/entity/CategoryModel';
 import { RefreshFooter } from '../../mvvm/view/RefreshFooter';
 
 @Component
-export struct Category {
+export struct CategoryPage {
   @Prop dataList: CategoryModelChild[] = []
   onLoadMore: () => void = () => {
   }
@@ -44,7 +44,9 @@ export struct Category {
         }
       }.listDirection(Axis.Vertical).onReachEnd(() => {
         console.info("MYTAG", "onReachEnd start...")
-        this.onLoadMore()
+        if (this.dataList.length > 0) {
+          this.onLoadMore()
+        }
       })
     }
   }

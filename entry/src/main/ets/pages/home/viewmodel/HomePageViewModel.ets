@@ -3,12 +3,13 @@ import { BaseViewModel } from '../../../mvvm/viewmodel/BaseViewModel';
 import { HttpRequestCallback } from '../../../http/HttpRequest';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { HomePageModel } from '../model/HomePageModel';
-
+@Observed
 export class HomePageViewModel extends BaseViewModel {
   model = new HomePageModel()
   dataList: HomeModelIssueListItemList[] = []
 
   getHomeList(isReresh: boolean, isFirst: boolean) {
+    console.info("MYTAG","getHomeList start,isReresh:"+isReresh+",isFirst:"+isFirst)
     const currThis = this
 
     class HomeModelCallback implements HttpRequestCallback<HomeModel> {
@@ -17,7 +18,7 @@ export class HomePageViewModel extends BaseViewModel {
         if (isFirst) {
           currThis.loadingProps.isShowInitLoading = true
         }
-        currThis.isRefreshing = true
+        currThis.isRefreshing = isReresh
       }
 
       onComplete(): void {
@@ -45,6 +46,9 @@ export class HomePageViewModel extends BaseViewModel {
         currThis.loadingProps.isShowNetErr = true
         currThis.isRefreshing = false
         currThis.isLoadMore = false
+        if (isFirst) {
+          currThis.loadingProps.isShowInitLoading = false
+        }
       }
     }
 

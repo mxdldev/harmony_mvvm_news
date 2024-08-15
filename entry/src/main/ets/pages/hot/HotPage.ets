@@ -7,24 +7,36 @@ import { HotPageViewModel } from './viewmodel/HotPageViewModel';
 export struct HotPage {
   @State viewModel: HotPageViewModel = new HotPageViewModel()
 
+  aboutToAppear(): void {
+    this.viewModel.getHotRankList(this.viewModel.hotTabTitle[0], false, true)
+  }
+
   build() {
     CommonRootPage({
       isShowBackBtn: false,
       title: "热门",
       loadingProps: this.viewModel.loadingProps,
-      isRefreshing: this.viewModel.isRefreshing
+      isRefreshing: this.viewModel.isRefreshing,
+      onRefresh: () => {
+        this.viewModel.getHotRankList(this.viewModel.hotTabTitle[this.viewModel.index], true, false)
+      }
     }) {
       Tabs() {
         ForEach(this.viewModel.hotTabTitle, (hotTab: HotTab, index) => {
           TabContent() {
             RankPage({
-              hotTab: hotTab, onLoadMore: (hotTab, isRefresh, isFirst) => {
-                this.viewModel.getHotRankList(hotTab, isRefresh, isFirst)
+              hotTab: hotTab, onLoadMore: (hotTab) => {
+                this.viewModel.getHotRankList(hotTab, false, false)
               }
             })
           }.tabBar(this.tabItem(hotTab.title))
         })
-      }
+      }.onChange((index) => {
+        this.viewModel.index = index
+        if (this.viewModel.hotTabTitle[index].dataList.length == 0) {
+          this.viewModel.getHotRankList(this.viewModel.hotTabTitle[index], false, true)
+        }
+      })
     }
   }
 

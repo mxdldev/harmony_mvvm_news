@@ -5,7 +5,7 @@ import { RefreshFooter } from '../../mvvm/view/RefreshFooter';
 export struct ForcePage {
   @Prop dataList: FocusModelItemList[] = []
 
-  onLoadMore: (isReresh: boolean, isFirst: boolean) => void = (isReresh,isFirst) => {
+  onLoadMore: () => void = () => {
   }
 
   build() {
@@ -54,11 +54,9 @@ export struct ForcePage {
           }
         }
       }.listDirection(Axis.Vertical).onReachEnd(() => {
+        console.info("MYTAG", "onReachEnd start...")
         if (this.dataList.length > 0) {
-          console.info("MYTAG", "onReachEnd start...")
-          this.onLoadMore(false,false)
-        }else{
-          this.onLoadMore(true,true)
+          this.onLoadMore()
         }
       }
 

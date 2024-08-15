@@ -5,12 +5,7 @@ export struct CommonRootPage {
   @Prop isShowBackBtn: boolean = true
   @Prop title: string = ''
   @Prop isShowTitleBar: boolean = true
-  @Prop loadingProps: PageState = {
-    isShowInitLoading: false,
-    isShowTransparentLoading: false,
-    isShowNoData: false,
-    isShowNetErr: false,
-  }
+  @Prop loadingProps: PageState
   @Prop isRefreshing: boolean
   @Prop enableRefreshing: boolean = true
   onRefresh: () => void = () => {
@@ -77,9 +72,9 @@ export struct CommonRootPage {
   }
 }
 
-export interface PageState {
-  isShowInitLoading: boolean;
-  isShowTransparentLoading: boolean;
-  isShowNoData: boolean;
-  isShowNetErr: boolean;
+export class PageState {
+  isShowInitLoading: boolean = false;
+  isShowTransparentLoading: boolean = false;
+  isShowNoData: boolean = false;
+  isShowNetErr: boolean = false;
 }

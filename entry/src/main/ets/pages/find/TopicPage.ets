@@ -28,7 +28,9 @@ export struct TopicPage {
         }
       }.listDirection(Axis.Vertical).onReachEnd(() => {
         console.info("MYTAG", "onReachEnd start...")
-        this.onLoadMore()
+        if (this.dataList.length > 0) {
+          this.onLoadMore()
+        }
       })
     }
   }
