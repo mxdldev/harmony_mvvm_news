@@ -1,14 +1,12 @@
 import { RankPage } from './RankPage'
-import hotViewModel, { HotTab } from './entity/HotTabList';
-import { CommonRootPage, PageState } from '../../mvvm/view/CommonRootPage';
-import { HomePageModel } from '../home/model/HomePageModel';
-import { HomePageViewModel } from '../home/viewmodel/HomePageViewModel';
+import { HotTab } from './entity/HotTabList';
+import { CommonRootPage } from '../../mvvm/view/CommonRootPage';
+import { HotPageViewModel } from './viewmodel/HotPageViewModel';
 
 @Component
 export struct HotPage {
-  viewModel = new HomePageViewModel()
+  @State viewModel: HotPageViewModel = new HotPageViewModel()
 
-  @State hotTabTitle:HotTab[] = hotViewModel.hotTabTitle
   build() {
     CommonRootPage({
       isShowBackBtn: false,
@@ -17,9 +15,13 @@ export struct HotPage {
       isRefreshing: this.viewModel.isRefreshing
     }) {
       Tabs() {
-        ForEach(this.hotTabTitle, (hotTab: HotTab, index) => {
+        ForEach(this.viewModel.hotTabTitle, (hotTab: HotTab, index) => {
           TabContent() {
-            RankPage({ isRefreshing: this.isRefreshing, rankType: hotTab.rankType, loadingProps: this.loadingProps })
+            RankPage({
+              hotTab: hotTab, onLoadMore: (hotTab, isRefresh, isFirst) => {
+                this.viewModel.getHotRankList(hotTab, isRefresh, isFirst)
+              }
+            })
           }.tabBar(this.tabItem(hotTab.title))
         })
       }

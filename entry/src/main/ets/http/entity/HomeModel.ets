@@ -20,8 +20,7 @@ export interface HomeModelIssueListItemListData {
   playUrl: string;
   author: AuthorModel;
 }
-
-export interface HomeModelIssueListItemList {
+export class HomeModelIssueListItemList {
   type?: string;
   data?: HomeModelIssueListItemListData;
   id?: number;

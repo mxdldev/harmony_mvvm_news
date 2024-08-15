@@ -1,66 +1,16 @@
-import { BusinessError } from '@kit.BasicServicesKit';
-import { HomeModel, HomeModelIssueListItemList } from '../../http/entity/HomeModel';
-import hotViewModel from './entity/HotTabList';
-import { HttpRequestCallback } from '../../http/HttpRequest';
-import { ApiService } from '../../http/ApiService';
+import { HomeModelIssueListItemList } from '../../http/entity/HomeModel';
 import { RefreshFooter } from '../../mvvm/view/RefreshFooter';
-import { PageState } from '../../mvvm/view/CommonRootPage';
+import { HotTab } from './entity/HotTabList';
 
 @Component
 export struct RankPage {
-  @Link loadingProps: PageState
-  private rankType = hotViewModel.hotTabTitle[0].rankType
-  @State dataList: HomeModelIssueListItemList[] = [];
-
-
-  getHotRankList(isReresh: boolean, isFirst: boolean) {
-    const currThis = this
-
-    class HotRankCallback implements HttpRequestCallback<HomeModel> {
-      onStart(): void {
-        console.log('Request started.');
-        if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = true
-        }
-      }
-
-      onComplete(): void {
-        console.log('Request completed.');
-        if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = false
-        }
-        currThis.isRefreshing = false
-        currThis.isLoadMore = false
-      }
-
-      onSuccess(response: HomeModel): void {
-        console.log('Request succeeded with response:', response);
-
-        if (isReresh) {
-          currThis.dataList = response.itemList
-        } else {
-          currThis.dataList = [...currThis.dataList, ...response.itemList]
-        }
-      }
-
-      onFailure(error: BusinessError): void {
-        console.log('Request failed with error:', error);
-        currThis.loadingProps.isShowNetErr = true
-        currThis.isRefreshing = false
-        currThis.isLoadMore = false
-      }
-    }
-
-    ApiService.getInstance().getHotRankList(this.rankType, new HotRankCallback());
-  }
-
-  aboutToAppear(): void {
-    this.getHotRankList(true, false)
+  @ObjectLink hotTab: HotTab
+  onLoadMore: (hotTab: HotTab, isReresh: boolean, isFirst: boolean) => void = (hotTab, isReresh, isFirst) => {
   }
 
   build() {
     List() {
-      ForEach(this.dataList, (item: HomeModelIssueListItemList, index) => {
+      ForEach(this.hotTab.dataList, (item: HomeModelIssueListItemList, index) => {
         ListItem() {
           Column() {
             Stack() {
@@ -90,15 +40,18 @@ export struct RankPage {
           })
         }
       })
-      if (this.dataList.length > 0) {
+      if (this.hotTab.dataList.length > 0) {
         ListItem() {
-          RefreshFooter({ showFooter: this.isLoadMore })
+          RefreshFooter({ showFooter: true })
         }
       }
     }.listDirection(Axis.Vertical).onReachEnd(() => {
-      console.info("MYTAG", "onReachEnd start...")
-      this.isLoadMore = true
-      this.getHotRankList(false, false)
+      if (this.hotTab.dataList.length > 0) {
+        console.info("MYTAG", "onReachEnd start...")
+        this.onLoadMore(this.hotTab, false, false)
+      } else {
+        this.onLoadMore(this.hotTab, true, true)
+      }
     })
   }
 }
