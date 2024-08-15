@@ -4,6 +4,7 @@ import { BaseViewModel } from '../../../mvvm/viewmodel/BaseViewModel';
 import hotViewModel, { HotTab } from '../entity/HotTabList';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { HotPageModel } from '../model/HotPageModel';
+
 export class HotPageViewModel extends BaseViewModel {
   model = new HotPageModel()
   hotTabTitle: HotTab[] = hotViewModel.hotTabTitle
@@ -17,6 +18,7 @@ export class HotPageViewModel extends BaseViewModel {
       onStart(): void {
         console.log('Request started.');
         if (isFirst) {
+          //这个页面isShowInitLoading状态不刷新不能关闭loading
           //currThis.loadingProps.isShowInitLoading = true
           currThis.isShowInitLoading = true
         }
