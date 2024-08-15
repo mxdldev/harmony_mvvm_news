@@ -4,7 +4,6 @@ import { BaseViewModel } from '../../../mvvm/viewmodel/BaseViewModel';
 import hotViewModel, { HotTab } from '../entity/HotTabList';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { HotPageModel } from '../model/HotPageModel';
-
 export class HotPageViewModel extends BaseViewModel {
   model = new HotPageModel()
   hotTabTitle: HotTab[] = hotViewModel.hotTabTitle
@@ -18,15 +17,17 @@ export class HotPageViewModel extends BaseViewModel {
       onStart(): void {
         console.log('Request started.');
         if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = true
+          //currThis.loadingProps.isShowInitLoading = true
+          currThis.isShowInitLoading = true
         }
-        currThis.isRefreshing = true
+        currThis.isRefreshing = isReresh
       }
 
       onComplete(): void {
         console.log('Request completed.');
         if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = false
+          //currThis.loadingProps.isShowInitLoading = false
+          currThis.isShowInitLoading = false
         }
         currThis.isRefreshing = false
         currThis.isLoadMore = false
@@ -48,7 +49,8 @@ export class HotPageViewModel extends BaseViewModel {
         currThis.isRefreshing = false
         currThis.isLoadMore = false
         if (isFirst) {
-          currThis.loadingProps.isShowInitLoading = false
+          //currThis.loadingProps.isShowInitLoading = false
+          currThis.isShowInitLoading = false
         }
       }
     }

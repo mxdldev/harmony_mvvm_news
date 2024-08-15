@@ -7,5 +7,6 @@ export class BaseViewModel{
     isShowNetErr: false,
   }
   isRefreshing: boolean = false
+  isShowInitLoading: boolean = false
   isLoadMore: boolean = false
 }

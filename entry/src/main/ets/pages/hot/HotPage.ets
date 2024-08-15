@@ -17,6 +17,7 @@ export struct HotPage {
       title: "热门",
       loadingProps: this.viewModel.loadingProps,
       isRefreshing: this.viewModel.isRefreshing,
+      isShowInitLoading:this.viewModel.isShowInitLoading,
       onRefresh: () => {
         this.viewModel.getHotRankList(this.viewModel.hotTabTitle[this.viewModel.index], true, false)
       }

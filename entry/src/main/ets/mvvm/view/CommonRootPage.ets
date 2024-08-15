@@ -7,6 +7,7 @@ export struct CommonRootPage {
   @Prop isShowTitleBar: boolean = true
   @Prop loadingProps: PageState
   @Prop isRefreshing: boolean
+  @Prop isShowInitLoading: boolean
   @Prop enableRefreshing: boolean = true
   onRefresh: () => void = () => {
   }
@@ -42,7 +43,7 @@ export struct CommonRootPage {
           this.onRefresh()
         }).pullToRefresh(true)
 
-        if (this.loadingProps.isShowInitLoading) {
+        if (this.loadingProps.isShowInitLoading || this.isShowInitLoading) {
           Column() {
             Image($r('app.media.loading')).imgSize()
             Text('加载中')
@@ -71,6 +72,7 @@ export struct CommonRootPage {
     }.width('100%').height('100%').justifyContent(FlexAlign.Start)
   }
 }
+
 export class PageState {
   isShowInitLoading: boolean = false;
   isShowTransparentLoading: boolean = false;
