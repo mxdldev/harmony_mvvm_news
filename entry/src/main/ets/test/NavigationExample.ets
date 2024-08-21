@@ -1,7 +1,12 @@
 @Entry
 @Component
 struct NavigationExample {
-  @State TooTmp: ToolbarItem = {'value': "func", 'icon': "./image/ic_public_highlights.svg", 'action': ()=> {}}
+  @State TooTmp: ToolbarItem = {
+    'value': "首页", 'icon': $r('app.media.icon_unsel_hot'), 'action': () => {
+      console.info("MYTAG", "toolbar click start...")
+      this.pageInfos.pushPath({ name: "NavDestinationTitle1" })
+    }
+  }
   @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack()
   private arr: number[] = [1, 2, 3];
 
@@ -20,41 +25,56 @@ struct NavigationExample {
     Column() {
       Navigation(this.pageInfos) {
         TextInput({ placeholder: 'search...' })
-          .width("90%")
+          .width("40%")
           .height(40)
           .backgroundColor('#FFFFFF')
 
         List({ space: 12 }) {
-          ForEach(this.arr, (item:string) => {
+          ForEach(this.arr, (item: string) => {
             ListItem() {
-              Text("NavRouter" + item)
-                .width("100%")
+              Text("a" + item)
+                .width("40%")
                 .height(72)
                 .backgroundColor('#FFFFFF')
                 .borderRadius(24)
                 .fontSize(16)
                 .fontWeight(500)
                 .textAlign(TextAlign.Center)
-                .onClick(()=>{
-                  this.pageInfos.pushPath({ name: "NavDestinationTitle" + item})
+                .onClick(() => {
+                  this.pageInfos.pushPath({ name: "NavDestinationTitle" + item })
                 })
             }
-          }, (item:string):string => item)
+          }, (item: string): string => item)
         }
-        .width("90%")
+        .width("40%")
         .margin({ top: 12 })
       }
       .title("主标题")
-      .mode(NavigationMode.Split)
+      .mode(NavigationMode.Stack)
       .navDestination(this.PageMap)
       .menus([
-        {value: "", icon: "./image/ic_public_search.svg", action: ()=> {}},
-        {value: "", icon: "./image/ic_public_add.svg", action: ()=> {}},
-        {value: "", icon: "./image/ic_public_add.svg", action: ()=> {}},
-        {value: "", icon: "./image/ic_public_add.svg", action: ()=> {}},
-        {value: "", icon: "./image/ic_public_add.svg", action: ()=> {}}
+        {
+          value: "", icon: "./image/ic_public_search.svg", action: () => {
+        }
+        },
+        {
+          value: "", icon: "./image/ic_public_add.svg", action: () => {
+        }
+        },
+        {
+          value: "", icon: "./image/ic_public_add.svg", action: () => {
+        }
+        },
+        {
+          value: "", icon: "./image/ic_public_add.svg", action: () => {
+        }
+        },
+        {
+          value: "", icon: "./image/ic_public_add.svg", action: () => {
+        }
+        }
       ])
-      .toolbarConfiguration([this.TooTmp, this.TooTmp, this.TooTmp])
+      //.toolbarConfiguration([this.TooTmp, this.TooTmp, this.TooTmp])
     }
     .height('100%')
     .width('100%')
@@ -66,6 +86,7 @@ struct NavigationExample {
 @Component
 export struct pageOneTmp {
   @Consume('pageInfos') pageInfos: NavPathStack;
+
   build() {
     NavDestination() {
       Column() {
@@ -84,6 +105,7 @@ export struct pageOneTmp {
 @Component
 export struct pageTwoTmp {
   @Consume('pageInfos') pageInfos: NavPathStack;
+
   build() {
     NavDestination() {
       Column() {
@@ -102,6 +124,7 @@ export struct pageTwoTmp {
 @Component
 export struct pageThreeTmp {
   @Consume('pageInfos') pageInfos: NavPathStack;
+
   build() {
     NavDestination() {
       Column() {

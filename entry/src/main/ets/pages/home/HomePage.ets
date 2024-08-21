@@ -3,10 +3,12 @@ import { CommonRootPage, PageState } from '../../mvvm/view/CommonRootPage';
 import { RefreshFooter } from '../../mvvm/view/RefreshFooter';
 import { HomeModelIssueListItemList } from '../../http/entity/HomeModel';
 import { HomePageViewModel } from './viewmodel/HomePageViewModel';
+import { HomeDetailParam } from './entity/HomeDetailParam';
 
 @Component
 export struct HomePage {
   @State viewModel: HomePageViewModel = new HomePageViewModel()
+  @Consume('pageInfos') pageInfos: NavPathStack;
 
   aboutToAppear() {
     this.viewModel.getHomeList(false, true)
@@ -49,11 +51,15 @@ export struct HomePage {
               }.width('100%').height('60vp').padding({ left: '5vp', right: '5vp' })
             }.width('100%').onClick(() => {
               console.info("MYTAG", "item click start...")
-              router.pushUrl({
-                url: 'pages/home/HomeDetailPage',
-                params: { 'id': item.data?.id, 'playUrl': item.data?.playUrl }
-              }, router.RouterMode.Standard, (error) => {
-
+              // router.pushUrl({
+              //   url: 'pages/home/HomeDetailPage',
+              //   params: { 'id': item.data?.id, 'playUrl': item.data?.playUrl }
+              // }, router.RouterMode.Standard, (error) => {
+              //
+              // })
+              this.pageInfos.pushPath({
+                name: 'HomeDetailPage',
+                param: new HomeDetailParam(item.data?.id,item.data?.playUrl)
               })
             })
           }
@@ -65,7 +71,7 @@ export struct HomePage {
         }
       }.onReachEnd(() => {
         console.info("MYTAG", "onReachEnd start...")
-        if(this.viewModel.dataList.length > 0){
+        if (this.viewModel.dataList.length > 0) {
           this.viewModel.isLoadMore = true
           this.viewModel.getHomeList(false, false)
         }

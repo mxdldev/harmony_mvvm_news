@@ -2,6 +2,7 @@ import router from '@ohos.router';
 
 @Component
 export struct CommonTitleBar {
+  @Consume('pageInfos') pageInfos: NavPathStack;
   @State isShowBackBtn:boolean = true
   @State title:string = ''
   build() {
@@ -13,7 +14,8 @@ export struct CommonTitleBar {
           .margin({ left: '20vp' })
           .alignRules({ center: { anchor: '__container__', align: VerticalAlign.Center } })
           .onClick(() => {
-            router.back()
+            //router.back()
+            this.pageInfos.pop()
           })
       }
       Text(this.title)
