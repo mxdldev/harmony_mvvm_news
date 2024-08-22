@@ -9,13 +9,13 @@ import { HomeDetailViewModel } from './viewmodel/HomeDetailViewModel';
 @Component
 export struct HomeDetailPage {
   @State viewModel: HomeDetailViewModel = new HomeDetailViewModel()
-  @Consume('pageInfos') pageInfos: NavPathStack;
+  @Consume('navPathStack') navPathStack: NavPathStack;
 
   aboutToAppear(): void {
     //const params: DetailPageParams = router.getParams() as DetailPageParams;
     //this.viewModel.dataId = params.id;
     //this.viewModel.playUrl = params.playUrl
-    let homeDetailParam = this.pageInfos.getParamByName("HomeDetailPage")[0] as HomeDetailParam;
+    let homeDetailParam = this.navPathStack.getParamByName("HomeDetailPage")[0] as HomeDetailParam;
     this.viewModel.dataId = homeDetailParam.id
     this.viewModel.playUrl = homeDetailParam.playUrl
     console.info("MYTAG", 'dataId:' + this.viewModel.dataId + ";playUrl:" + this.viewModel.playUrl)

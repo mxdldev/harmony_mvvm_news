@@ -5,12 +5,23 @@ import { MinePage } from './mine/MinePage'
 import { HotPage } from './hot/HotPage'
 import { HomeDetailPage } from './home/HomeDetailPage'
 
-@Entry({routeName:'MainPage'})
+@Entry({ routeName: 'MainPage' })
 @Component
 export struct MainPage {
+  @Provide('navPathStack') navPathStack: NavPathStack = new NavPathStack()
   @State selectIndex: number = 0
+
+  @Builder
+  pageMap(name: string) {
+    if (name === 'HomeDetailPage') {
+      HomeDetailPage()
+    } else if (name === 'MainPage') {
+      MainPage()
+    }
+  }
+
   build() {
-    NavDestination() {
+    Navigation(this.navPathStack) {
       Column() {
         Tabs({ index: this.selectIndex, barPosition: BarPosition.End }) {
           TabContent() {
@@ -58,7 +69,7 @@ export struct MainPage {
           this.selectIndex = index
         })
       }
-    }.hideTitleBar(true)
+    }.navDestination(this.pageMap).hideTitleBar(true).mode(NavigationMode.Stack)
   }
 
   @Builder

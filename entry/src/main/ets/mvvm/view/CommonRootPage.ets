@@ -2,7 +2,6 @@ import { CommonTitleBar } from './CommonTitleBar'
 
 @Component
 export struct CommonRootPage {
-  @Consume('pageInfos') pageInfos: NavPathStack;
   @Prop isShowBackBtn: boolean = true
   @Prop title: string = ''
   @Prop isShowTitleBar: boolean = true

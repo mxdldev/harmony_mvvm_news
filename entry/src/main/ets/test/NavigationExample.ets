@@ -4,10 +4,10 @@ struct NavigationExample {
   @State TooTmp: ToolbarItem = {
     'value': "首页", 'icon': $r('app.media.icon_unsel_hot'), 'action': () => {
       console.info("MYTAG", "toolbar click start...")
-      this.pageInfos.pushPath({ name: "NavDestinationTitle1" })
+      this.navPathStack.pushPath({ name: "NavDestinationTitle1" })
     }
   }
-  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack()
+  @Provide('navPathStack') navPathStack: NavPathStack = new NavPathStack()
   private arr: number[] = [1, 2, 3];
 
   @Builder
@@ -23,7 +23,7 @@ struct NavigationExample {
 
   build() {
     Column() {
-      Navigation(this.pageInfos) {
+      Navigation(this.navPathStack) {
         TextInput({ placeholder: 'search...' })
           .width("40%")
           .height(40)
@@ -41,7 +41,7 @@ struct NavigationExample {
                 .fontWeight(500)
                 .textAlign(TextAlign.Center)
                 .onClick(() => {
-                  this.pageInfos.pushPath({ name: "NavDestinationTitle" + item })
+                  this.navPathStack.pushPath({ name: "NavDestinationTitle" + item })
                 })
             }
           }, (item: string): string => item)
@@ -85,7 +85,7 @@ struct NavigationExample {
 // PageOne.ets
 @Component
 export struct pageOneTmp {
-  @Consume('pageInfos') pageInfos: NavPathStack;
+  @Consume('navPathStack') navPathStack: NavPathStack;
 
   build() {
     NavDestination() {
@@ -94,7 +94,7 @@ export struct pageOneTmp {
       }.width('100%').height('100%')
     }.title("NavDestinationTitle1")
     .onBackPressed(() => {
-      const popDestinationInfo = this.pageInfos.pop() // 弹出路由栈栈顶元素
+      const popDestinationInfo = this.navPathStack.pop() // 弹出路由栈栈顶元素
       console.log('pop' + '返回值' + JSON.stringify(popDestinationInfo))
       return true
     })
@@ -104,7 +104,7 @@ export struct pageOneTmp {
 // PageTwo.ets
 @Component
 export struct pageTwoTmp {
-  @Consume('pageInfos') pageInfos: NavPathStack;
+  @Consume('navPathStack') navPathStack: NavPathStack;
 
   build() {
     NavDestination() {
@@ -113,7 +113,7 @@ export struct pageTwoTmp {
       }.width('100%').height('100%')
     }.title("NavDestinationTitle2")
     .onBackPressed(() => {
-      const popDestinationInfo = this.pageInfos.pop() // 弹出路由栈栈顶元素
+      const popDestinationInfo = this.navPathStack.pop() // 弹出路由栈栈顶元素
       console.log('pop' + '返回值' + JSON.stringify(popDestinationInfo))
       return true
     })
@@ -123,7 +123,7 @@ export struct pageTwoTmp {
 // PageThree.ets
 @Component
 export struct pageThreeTmp {
-  @Consume('pageInfos') pageInfos: NavPathStack;
+  @Consume('navPathStack') navPathStack: NavPathStack;
 
   build() {
     NavDestination() {
@@ -132,7 +132,7 @@ export struct pageThreeTmp {
       }.width('100%').height('100%')
     }.title("NavDestinationTitle3")
     .onBackPressed(() => {
-      const popDestinationInfo = this.pageInfos.pop() // 弹出路由栈栈顶元素
+      const popDestinationInfo = this.navPathStack.pop() // 弹出路由栈栈顶元素
       console.log('pop' + '返回值' + JSON.stringify(popDestinationInfo))
       return true
     })

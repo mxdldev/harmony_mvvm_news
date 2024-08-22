@@ -8,7 +8,7 @@ import { HomeDetailParam } from './entity/HomeDetailParam';
 @Component
 export struct HomePage {
   @State viewModel: HomePageViewModel = new HomePageViewModel()
-  @Consume('pageInfos') pageInfos: NavPathStack;
+  @Consume('navPathStack') navPathStack: NavPathStack;
 
   aboutToAppear() {
     this.viewModel.getHomeList(false, true)
@@ -57,7 +57,7 @@ export struct HomePage {
               // }, router.RouterMode.Standard, (error) => {
               //
               // })
-              this.pageInfos.pushPath({
+              this.navPathStack.pushPath({
                 name: 'HomeDetailPage',
                 param: new HomeDetailParam(item.data?.id,item.data?.playUrl)
               })
