@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "FindAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "FindAbility_label",
+      "value": "label"
+    }
+  ]
+}

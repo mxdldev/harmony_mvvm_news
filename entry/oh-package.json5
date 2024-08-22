@@ -5,6 +5,11 @@
   "main": "",
   "author": "",
   "license": "",
-  "dependencies": {}
+  "dependencies": {
+    "lib_news_common": "file:../lib_news_common",
+    "lib_news_api": "file:../lib_news_api",
+    "module_home": "file:../module_home",
+    "module_find": "file:../module_find"
+  }
 }
 

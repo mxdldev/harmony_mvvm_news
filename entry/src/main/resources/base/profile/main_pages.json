@@ -2,7 +2,6 @@
   "src": [
     "pages/SplashPage",
     "pages/MainPage",
-    "pages/home/HomeDetailPage",
     "test/NavigationExample"
   ]
 }

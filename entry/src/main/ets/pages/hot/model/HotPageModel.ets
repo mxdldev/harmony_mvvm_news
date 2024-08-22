@@ -1,6 +1,6 @@
-import { ApiService } from '../../../http/ApiService';
-import { HomeModel } from '../../../http/entity/HomeModel';
-import { HttpRequestCallback } from '../../../http/HttpRequest';
+import { ApiService } from 'lib_news_api/src/main/ets/http/ApiService';
+import { HomeModel } from 'lib_news_api/src/main/ets/http/entity/HomeModel';
+import { HttpRequestCallback } from 'lib_news_api/src/main/ets/http/HttpRequest';
 
 export class HotPageModel {
   getRankList(rankType: string, callback: HttpRequestCallback<HomeModel>) {

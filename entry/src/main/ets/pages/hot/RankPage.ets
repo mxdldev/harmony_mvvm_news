@@ -1,5 +1,5 @@
-import { HomeModelIssueListItemList } from '../../http/entity/HomeModel';
-import { RefreshFooter } from '../../mvvm/view/RefreshFooter';
+import { HomeModelIssueListItemList } from 'lib_news_api/src/main/ets/http/entity/HomeModel';
+import { RefreshFooter } from 'lib_news_common/src/main/ets/mvvm/view/RefreshFooter';
 import { HotTab } from './entity/HotTabList';
 
 @Component

@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "模块描述"
+    },
+    {
+      "name": "HomeAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "HomeAbility_label",
+      "value": "label"
+    }
+  ]
+}

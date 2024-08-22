@@ -1,4 +1,4 @@
-import { HomeModelIssueListItemList } from '../../../http/entity/HomeModel';
+import { HomeModelIssueListItemList } from 'lib_news_api/src/main/ets/http/entity/HomeModel';
 
 @Observed
 export class HotTab {

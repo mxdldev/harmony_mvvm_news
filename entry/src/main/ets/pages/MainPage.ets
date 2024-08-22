@@ -1,9 +1,9 @@
-import { TabItem } from '../http/entity/TabItem'
-import { HomePage } from './home/HomePage'
-import { FindPage } from './find/FindPage'
+import { TabItem } from 'lib_news_api/src/main/ets/http/entity/TabItem'
+import { HomePage } from 'module_home/src/main/ets/pages/HomePage'
+import { FindPage } from 'module_find/src/main/ets/pages/FindPage'
 import { MinePage } from './mine/MinePage'
 import { HotPage } from './hot/HotPage'
-import { HomeDetailPage } from './home/HomeDetailPage'
+import { HomeDetailPage } from 'module_home/src/main/ets/pages/HomeDetailPage'
 
 @Entry({ routeName: 'MainPage' })
 @Component

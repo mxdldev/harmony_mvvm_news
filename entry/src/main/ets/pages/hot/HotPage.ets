@@ -1,6 +1,6 @@
 import { RankPage } from './RankPage'
 import { HotTab } from './entity/HotTabList';
-import { CommonRootPage } from '../../mvvm/view/CommonRootPage';
+import { CommonRootPage } from 'lib_news_common/src/main/ets/mvvm/view/CommonRootPage';
 import { HotPageViewModel } from './viewmodel/HotPageViewModel';
 
 @Component

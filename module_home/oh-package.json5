@@ -1,0 +1,13 @@
+{
+  "name": "module_home",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "lib_news_common": "file:../lib_news_common",
+    "lib_news_api": "file:../lib_news_api"
+  }
+}
+
