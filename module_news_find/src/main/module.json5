@@ -1,0 +1,11 @@
+{
+  "module": {
+    "name": "module_news_find",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet",
+      "2in1"
+    ]
+  }
+}

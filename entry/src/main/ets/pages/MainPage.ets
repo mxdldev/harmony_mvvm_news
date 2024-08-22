@@ -1,8 +1,8 @@
-import { HomePage } from 'module_home/src/main/ets/pages/HomePage'
-import { FindPage } from 'module_find/src/main/ets/pages/FindPage'
-import { MinePage } from 'module_me/src/main/ets/pages/MinePage'
-import { HotPage } from 'module_hot/src/main/ets/pages/HotPage'
-import { HomeDetailPage } from 'module_home/src/main/ets/pages/HomeDetailPage'
+import { HomePage } from 'lib_news_home/src/main/ets/components/HomePage'
+import { FindPage } from 'module_news_find/src/main/ets/components/FindPage'
+import { MinePage } from 'module_news_me/src/main/ets/components/MinePage'
+import { HotPage } from 'lib_news_hot/src/main/ets/components/HotPage'
+import { HomeDetailPage } from 'lib_news_home/src/main/ets/components/HomeDetailPage'
 
 @Entry({ routeName: 'MainPage' })
 @Component
