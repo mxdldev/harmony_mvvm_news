@@ -1,8 +1,7 @@
-import { TabItem } from 'lib_news_api/src/main/ets/http/entity/TabItem'
 import { HomePage } from 'module_home/src/main/ets/pages/HomePage'
 import { FindPage } from 'module_find/src/main/ets/pages/FindPage'
-import { MinePage } from './mine/MinePage'
-import { HotPage } from './hot/HotPage'
+import { MinePage } from 'module_me/src/main/ets/pages/MinePage'
+import { HotPage } from 'module_hot/src/main/ets/pages/HotPage'
 import { HomeDetailPage } from 'module_home/src/main/ets/pages/HomeDetailPage'
 
 @Entry({ routeName: 'MainPage' })
@@ -87,4 +86,11 @@ export struct MainPage {
         .textAlign(TextAlign.Center)
     }.width('100%').height('100%').justifyContent(FlexAlign.Center).backgroundColor('#f5f5f5')
   }
+}
+export interface  TabItem{
+  index: number;
+  title: string;
+  imageActivated: Resource;
+  imageOriginal: Resource;
+
 }
