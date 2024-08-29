@@ -1,9 +1,9 @@
-import { CategoryModelChild } from 'lib_news_api/src/main/ets/http/entity/CategoryModel';
-import { FocusModel, FocusModelItemList } from 'lib_news_api/src/main/ets/http/entity/FocusModel';
-import { HttpRequestCallback } from 'lib_news_api/src/main/ets/http/HttpRequest';
-import { BaseViewModel } from 'lib_news_common/src/main/ets/mvvm/viewmodel/BaseViewModel';
+import { CategoryModelChild } from 'lib_api/src/main/ets/http/entity/CategoryModel';
+import { FocusModel, FocusModelItemList } from 'lib_api/src/main/ets/http/entity/FocusModel';
+import { HttpRequestCallback } from 'lib_api/src/main/ets/http/HttpRequest';
+import { BaseViewModel } from 'lib_common/src/main/ets/mvvm/viewmodel/BaseViewModel';
 import { BusinessError } from '@kit.BasicServicesKit';
-import { TopicModel, TopicModelItemList } from 'lib_news_api/src/main/ets/http/entity/TopicModel';
+import { TopicModel, TopicModelItemList } from 'lib_api/src/main/ets/http/entity/TopicModel';
 import { FindPageModel } from '../model/FindPageModel';
 
 @Observed

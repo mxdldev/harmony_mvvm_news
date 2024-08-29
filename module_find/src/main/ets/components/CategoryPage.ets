@@ -1,5 +1,5 @@
-import { CategoryModelChild } from 'lib_news_api/src/main/ets/http/entity/CategoryModel';
-import { RefreshFooter } from 'lib_news_common/src/main/ets/mvvm/view/RefreshFooter';
+import { CategoryModelChild } from 'lib_api/src/main/ets/http/entity/CategoryModel';
+import { RefreshFooter } from 'lib_common/src/main/ets/mvvm/view/RefreshFooter';
 
 @Component
 export struct CategoryPage {

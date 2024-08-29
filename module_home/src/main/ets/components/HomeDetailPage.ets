@@ -1,7 +1,7 @@
 import { router } from '@kit.ArkUI';
-import { DetailPageParams } from 'lib_news_api/src/main/ets/http/entity/DetailPageParams';
-import { HomeModelIssueListItemList } from 'lib_news_api/src/main/ets/http/entity/HomeModel';
-import { CommonRootPage } from 'lib_news_common/src/main/ets/mvvm/view/CommonRootPage';
+import { DetailPageParams } from 'lib_api/src/main/ets/http/entity/DetailPageParams';
+import { HomeModelIssueListItemList } from 'lib_api/src/main/ets/http/entity/HomeModel';
+import { CommonRootPage } from 'lib_common/src/main/ets/mvvm/view/CommonRootPage';
 import { HomeDetailParam } from './entity/HomeDetailParam';
 import { HomeDetailViewModel } from './viewmodel/HomeDetailViewModel';
 

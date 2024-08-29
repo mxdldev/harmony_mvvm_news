@@ -1,6 +1,6 @@
-import { HomeModel, HomeModelIssueListItemList } from 'lib_news_api/src/main/ets/http/entity/HomeModel';
-import { BaseViewModel } from 'lib_news_common/src/main/ets/mvvm/viewmodel/BaseViewModel';
-import { HttpRequestCallback } from 'lib_news_api/src/main/ets/http/HttpRequest';
+import { HomeModel, HomeModelIssueListItemList } from 'lib_api/src/main/ets/http/entity/HomeModel';
+import { BaseViewModel } from 'lib_common/src/main/ets/mvvm/viewmodel/BaseViewModel';
+import { HttpRequestCallback } from 'lib_api/src/main/ets/http/HttpRequest';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { HomePageModel } from '../model/HomePageModel';
 @Observed

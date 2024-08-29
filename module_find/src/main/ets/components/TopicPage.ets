@@ -1,5 +1,5 @@
-import { TopicModelItemList } from 'lib_news_api/src/main/ets/http/entity/TopicModel'
-import { RefreshFooter } from 'lib_news_common/src/main/ets/mvvm/view/RefreshFooter';
+import { TopicModelItemList } from 'lib_api/src/main/ets/http/entity/TopicModel'
+import { RefreshFooter } from 'lib_common/src/main/ets/mvvm/view/RefreshFooter';
 
 @Component
 export struct TopicPage {

@@ -1,4 +1,4 @@
-import { CommonRootPage } from 'lib_news_common/src/main/ets/mvvm/view/CommonRootPage'
+import { CommonRootPage } from 'lib_common/src/main/ets/mvvm/view/CommonRootPage'
 import { CategoryPage } from './CategoryPage'
 import { ForcePage } from './ForcePage'
 import { TopicPage } from './TopicPage'

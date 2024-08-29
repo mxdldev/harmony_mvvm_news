@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { HomeDetailPage } from 'lib_news_home/src/main/ets/components/HomeDetailPage';
+import { HomeDetailPage } from 'module_home/src/main/ets/components/HomeDetailPage';
 import { MainPage } from './MainPage';
 
 @Entry

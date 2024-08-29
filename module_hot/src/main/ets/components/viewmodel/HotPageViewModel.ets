@@ -1,6 +1,6 @@
-import { HomeModel } from 'lib_news_api/src/main/ets/http/entity/HomeModel';
-import { HttpRequestCallback } from 'lib_news_api/src/main/ets/http/HttpRequest';
-import { BaseViewModel } from 'lib_news_common/src/main/ets/mvvm/viewmodel/BaseViewModel';
+import { HomeModel } from 'lib_api/src/main/ets/http/entity/HomeModel';
+import { HttpRequestCallback } from 'lib_api/src/main/ets/http/HttpRequest';
+import { BaseViewModel } from 'lib_common/src/main/ets/mvvm/viewmodel/BaseViewModel';
 import hotViewModel, { HotTab } from '../entity/HotTabList';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { HotPageModel } from '../model/HotPageModel';
