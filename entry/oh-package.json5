@@ -6,12 +6,12 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "lib_news_common": "file:../lib_news_common",
-    "lib_news_api": "file:../lib_news_api",
-    "module_news_find": "file:../module_news_find",
-    "lib_news_home": "file:../module_news_home",
-    "lib_news_hot": "file:../module_news_hot",
-    "module_news_me": "file:../module_news_me"
+    "lib_news_common": "file:../lib_common",
+    "lib_news_api": "file:../lib_api",
+    "module_news_find": "file:../module_find",
+    "lib_news_home": "file:../module_home",
+    "lib_news_hot": "file:../module_hot",
+    "module_news_me": "file:../module_me"
   }
 }
 

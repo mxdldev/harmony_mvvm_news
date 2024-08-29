@@ -32,28 +32,28 @@
       ]
     },
     {
-      "name": "lib_news_api",
-      "srcPath": "./lib_news_api"
+      "name": "lib_api",
+      "srcPath": "./lib_api"
     },
     {
-      "name": "lib_news_common",
-      "srcPath": "./lib_news_common",
+      "name": "lib_common",
+      "srcPath": "./lib_common"
     },
     {
-      "name": "module_news_find",
-      "srcPath": "./module_news_find",
+      "name": "module_find",
+      "srcPath": "./module_find"
     },
     {
-      "name": "module_news_home",
-      "srcPath": "./module_news_home"
+      "name": "module_home",
+      "srcPath": "./module_home"
     },
     {
-      "name": "module_news_hot",
-      "srcPath": "./module_news_hot"
+      "name": "module_hot",
+      "srcPath": "./module_hot"
     },
     {
-      "name": "module_news_me",
-      "srcPath": "./module_news_me",
+      "name": "module_me",
+      "srcPath": "./module_me"
     }
   ]
 }
