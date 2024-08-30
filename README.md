@@ -10,5 +10,5 @@ harmony_mvvm_news<br>
 单一结构体项目,页面导航实现Navigation实现
 
 ## 4.0.0
-组件化结构实现项目,两个功能模块lib_http,lib_common，4个业务模块module_home,module_hot,module_find,module_me,页面导航
+组件化结构体项目,两个功能模块lib_http,lib_common，4个业务模块module_home,module_hot,module_find,module_me,页面导航
 
