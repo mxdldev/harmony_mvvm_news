@@ -1,7 +1,6 @@
 {
   "src": [
     "pages/SplashPage",
-    "pages/MainPage",
-    "test/NavigationExample"
+    "pages/MainPage"
   ]
 }
